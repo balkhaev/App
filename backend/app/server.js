@@ -26,7 +26,7 @@ app.use((err, req, res, next) => {
 
     return res.status(status).json({
       status: false,
-      errors: errors ? errors : message,
+      errors: errors || [message] || [err.message],
     });
   }
 });
