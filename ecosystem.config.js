@@ -31,6 +31,7 @@ module.exports = {
         NODE_ENV: 'development',
         AUTH_SERVICE_LOGIN_ENDPOINT: 'http://localhost:4003/login',
         AUTH_SERVICE_SIGNUP_ENDPOINT: 'http://localhost:4003/signup',
+        AUTH_SERVICE_WEBHOOK_ENDPOINT: 'http://localhost:4003/webhook',
       },
       env_production: {
         NODE_ENV: 'production',
