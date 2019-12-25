@@ -1,0 +1,95 @@
+module.exports = {
+  apps: [
+    {
+      name: 'App Frontend',
+      cwd: './frontend',
+      script: 'frontend/server.js',
+      instances: 1,
+      autorestart: true,
+      max_restarts: 10,
+      watch: false,
+      max_memory_restart: '1G',
+      env: {
+        PORT: 3000,
+        NODE_ENV: 'development',
+      },
+      env_production: {
+        NODE_ENV: 'production',
+      },
+    },
+    {
+      name: 'App Backend',
+      script: 'backend/app/server.js',
+      instances: 1,
+      autorestart: true,
+      max_restarts: 10,
+      watch: true,
+      max_memory_restart: '1G',
+      env: {
+        PORT: 4000,
+        NODE_ENV: 'development',
+        AUTH_SERVICE_LOGIN_ENDPOINT: 'http://localhost:4003/login',
+        AUTH_SERVICE_SIGNUP_ENDPOINT: 'http://localhost:4003/signup',
+      },
+      env_production: {
+        NODE_ENV: 'production',
+      },
+    },
+    {
+      name: 'Service Admin',
+      cwd: 'services/admin',
+      script: 'services/admin/node_modules/react-scripts/scripts/start.js',
+      instances: 1,
+      autorestart: true,
+      max_restarts: 10,
+      watch: false,
+      max_memory_restart: '1G',
+      env: {
+        PORT: 4001,
+        BROWSER: 'none',
+        NODE_ENV: 'development',
+      },
+      env_production: {
+        NODE_ENV: 'production',
+      },
+    },
+    {
+      name: 'Service Upload',
+      cwd: 'services/uploader',
+      script: 'services/uploader/server.js',
+      instances: 1,
+      autorestart: true,
+      max_restarts: 10,
+      watch: true,
+      max_memory_restart: '1G',
+      env: {
+        PORT: 4002,
+        NODE_ENV: 'development',
+        S3_BUCKET: 'ra-storage',
+        S3_ENDPOINT: 'fra1.digitaloceanspaces.com',
+        S3_ACCESS_KEY_ID: 'T5LCKMRCNBE7Z5KHVMSN',
+        S3_SECRET_ACCESS_KEY: '0y1s+C8Mzo27avKhV1fL3XHZPLrBmy79s7MnIxP0Tgc',
+      },
+      env_production: {
+        NODE_ENV: 'production',
+      },
+    },
+    {
+      name: 'Service Passport',
+      cwd: 'services/passport',
+      script: 'services/passport/app.js',
+      instances: 1,
+      autorestart: true,
+      max_restarts: 10,
+      watch: true,
+      max_memory_restart: '1G',
+      env: {
+        PORT: 4003,
+        NODE_ENV: 'development',
+      },
+      env_production: {
+        NODE_ENV: 'production',
+      },
+    },
+  ],
+};

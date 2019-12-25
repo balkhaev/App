@@ -1,0 +1,15 @@
+{
+  "name": "kinovert",
+  "version": "0.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "pm2 startOrRestart ecosystem.config.js --update-env"
+  },
+  "keywords": [],
+  "author": "Mikhail Balkhaev",
+  "license": "ISC",
+  "dependencies": {
+    "react-admin": "^3.1.1"
+  }
+}

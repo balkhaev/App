@@ -1,0 +1,23 @@
+{
+  "name": "kinovert-backend",
+  "version": "0.0.0",
+  "description": "Kinovert centralizing backend",
+  "main": "app/server.js",
+  "scripts": {
+    "start": "nodemon remote-schema/index & nodemon app/index"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@apollo/gateway": "^0.11.5",
+    "apollo-link-context": "^1.0.19",
+    "apollo-link-http": "^1.5.16",
+    "apollo-server-express": "^2.9.14",
+    "axios": "^0.19.0",
+    "express": "^4.17.1",
+    "graphql": "^14.5.8",
+    "node-fetch": "^2.6.0",
+    "nodemon": "^2.0.2"
+  }
+}
