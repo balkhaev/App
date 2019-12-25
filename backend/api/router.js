@@ -1,4 +1,3 @@
-const proxy = require('express-http-proxy');
 const express = require('express');
 const axios = require('axios');
 
@@ -8,7 +7,6 @@ const {
   SERVICE_AUTH_WEBHOOK_ENDPOINT,
   SERVICE_AUTH_SIGNUP_ENDPOINT,
   SERVICE_AUTH_LOGIN_ENDPOINT,
-  SERVICE_ADMIN_ENDPOINT,
 } = process.env;
 
 router.get('/', (req, res) => {
@@ -41,7 +39,5 @@ router.get('/webhook', async (req, res, next) => {
 
   res.json(data);
 });
-
-router.get('/admin', proxy(SERVICE_ADMIN_ENDPOINT))
 
 module.exports = router;

@@ -29,7 +29,6 @@ module.exports = {
       env: {
         PORT: 4000,
         NODE_ENV: 'development',
-        SERVICE_ADMIN_ENDPOINT: 'http://localhost:4001',
         SERVICE_AUTH_LOGIN_ENDPOINT: 'http://localhost:4003/login',
         SERVICE_AUTH_SIGNUP_ENDPOINT: 'http://localhost:4003/signup',
         SERVICE_AUTH_WEBHOOK_ENDPOINT: 'http://localhost:4003/webhook',
@@ -51,6 +50,9 @@ module.exports = {
         PORT: 4001,
         BROWSER: 'none',
         NODE_ENV: 'development',
+        REACT_APP_SERVICE_AUTH_LOGIN_ENDPOINT: 'http://localhost:4003/login',
+        REACT_APP_SERVICE_AUTH_SIGNUP_ENDPOINT: 'http://localhost:4003/signup',
+        REACT_APP_SERVICE_HASURA_ENDPOINT: 'https://hasura-ds-test.herokuapp.com',
       },
       env_production: {
         NODE_ENV: 'production',
@@ -95,4 +97,14 @@ module.exports = {
       },
     },
   ],
+  deploy: {
+    staging: {
+      user: 'node',
+      host: ['104.248.83.244'],
+      ref: 'origin/master',
+      repo: ' git@lab.datascreen.ru:balkhaev/kinovert.git',
+      path: '/home/node/kinovert',
+      'post-deploy': './install.sh',
+    },
+  },
 };

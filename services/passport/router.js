@@ -7,7 +7,6 @@ const { errorHandler } = require('./db/errors');
 const router = express.Router();
 
 router.post('/login', async (req, res, next) => {
-  req.assert('email', 'Email is not valid').isEmail();
   req.assert('username', 'Username is not valid').notEmpty();
   req.assert('password', 'Password cannot be blank').notEmpty();
 
