@@ -1,22 +1,11 @@
 const express = require('express');
-
 const router = require('./router');
 
 const app = express();
-
 const PORT = process.env.PORT || 4000;
 
 app.use(express.json());
-
-app.get('/', (req, res) => {
-  res.json({
-    status: true,
-    path: 'root',
-  });
-});
-
 app.use('/api', router);
-
 app.use((err, req, res, next) => {
   if (err) {
     console.error(err.message);

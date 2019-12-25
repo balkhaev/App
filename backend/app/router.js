@@ -1,12 +1,14 @@
+const proxy = require('express-http-proxy');
 const express = require('express');
 const axios = require('axios');
 
 const router = express.Router();
 
 const {
-  AUTH_SERVICE_WEBHOOK_ENDPOINT,
-  AUTH_SERVICE_SIGNUP_ENDPOINT,
-  AUTH_SERVICE_LOGIN_ENDPOINT,
+  SERVICE_AUTH_WEBHOOK_ENDPOINT,
+  SERVICE_AUTH_SIGNUP_ENDPOINT,
+  SERVICE_AUTH_LOGIN_ENDPOINT,
+  SERVICE_ADMIN_ENDPOINT,
 } = process.env;
 
 router.get('/', (req, res) => {
@@ -17,7 +19,7 @@ router.get('/', (req, res) => {
 });
 
 router.post('/signup', async (req, res, next) => {
-  const { data } = await axios.post(AUTH_SERVICE_SIGNUP_ENDPOINT, req.body).catch(next);
+  const { data } = await axios.post(SERVICE_AUTH_SIGNUP_ENDPOINT, req.body).catch(next);
 
   res.json({
     status: true,
@@ -26,7 +28,7 @@ router.post('/signup', async (req, res, next) => {
 });
 
 router.post('/login', async (req, res, next) => {
-  const { data } = await axios.post(AUTH_SERVICE_LOGIN_ENDPOINT, req.body).catch(next);
+  const { data } = await axios.post(SERVICE_AUTH_LOGIN_ENDPOINT, req.body).catch(next);
 
   res.json({
     status: true,
@@ -35,9 +37,11 @@ router.post('/login', async (req, res, next) => {
 });
 
 router.get('/webhook', async (req, res, next) => {
-  const { data } = await axios.get(AUTH_SERVICE_WEBHOOK_ENDPOINT, req.body).catch(next);
+  const { data } = await axios.get(SERVICE_AUTH_WEBHOOK_ENDPOINT, req.body).catch(next);
 
   res.json(data);
 });
+
+router.get('/admin', proxy(SERVICE_ADMIN_ENDPOINT))
 
 module.exports = router;

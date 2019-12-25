@@ -64,8 +64,6 @@ router.post('/signup', async (req, res, next) => {
 });
 
 router.get('/webhook', async (req, res, next) => {
-  console.dir(req);
-
   passport.authenticate('bearer', (err, user, info) => {
     if (err) {
       return handleResponse(res, 401, { error: err });
