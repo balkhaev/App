@@ -77,7 +77,7 @@ router.get('/webhook', async (req, res, next) => {
       handleResponse(res, 200, { 'X-Hasura-Role': 'anonymous' });
     }
   })(req, res, next);
-})
+});
 
 function handleResponse(res, code, statusMsg) {
   res.status(code).json(statusMsg);

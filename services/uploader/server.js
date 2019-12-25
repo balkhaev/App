@@ -14,7 +14,7 @@ app.use(express.json());
 
 app.disable('x-powered-by');
 
-app.use('/storage', require('./storage'));
+app.use(require('./router'));
 
 app.listen(PORT, () => {
   console.log(`App at http://localhost:${PORT}`);

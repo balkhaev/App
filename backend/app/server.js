@@ -1,35 +1,21 @@
 const express = require('express');
-const axios = require('axios');
+
+const router = require('./router');
 
 const app = express();
 
-const { AUTH_SERVICE_SIGNUP_ENDPOINT, AUTH_SERVICE_LOGIN_ENDPOINT, PORT = 4000 } = process.env;
+const PORT = process.env.PORT || 4000;
 
 app.use(express.json());
 
 app.get('/', (req, res) => {
   res.json({
     status: true,
+    path: 'root',
   });
 });
 
-app.post('/signup', async (req, res, next) => {
-  const { data } = await axios.post(AUTH_SERVICE_SIGNUP_ENDPOINT, req.body).catch(next);
-
-  res.json({
-    status: true,
-    data,
-  });
-});
-
-app.post('/login', async (req, res, next) => {
-  const { data } = await axios.post(AUTH_SERVICE_LOGIN_ENDPOINT, req.body).catch(next);
-
-  res.json({
-    status: true,
-    data,
-  });
-});
+app.use('/api', router);
 
 app.use((err, req, res, next) => {
   if (err) {

@@ -1,7 +1,3 @@
-/**
- * Module dependencies.
- */
-
 const express = require('express');
 const bodyParser = require('body-parser');
 const chalk = require('chalk');
@@ -9,19 +5,11 @@ const dotenv = require('dotenv');
 const passport = require('passport');
 const expressValidator = require('express-validator');
 
-/**
- * Load environment variables from .env file, where API keys and passwords are configured.
- */
 dotenv.load();
 
-/**
- * Create Express server.
- */
+const router = require('./router');
 const app = express();
 
-/**
- * Express configuration.
- */
 app.set('host', '0.0.0.0');
 app.set('port', process.env.PORT || 8080);
 app.set('json spaces', 2);
@@ -30,11 +18,8 @@ app.use(expressValidator());
 app.use(passport.initialize());
 app.use(passport.session());
 
-app.post('/api', require('./api'));
+app.use(router);
 
-/**
- * Start Express server.
- */
 app.listen(app.get('port'), () => {
   console.log('%s App is running at http://localhost:%d in %s mode', chalk.green('✓'), app.get('port'), app.get('env'));
   console.log('  Press CTRL-C to stop\n');
