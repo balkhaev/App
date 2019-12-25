@@ -3,7 +3,7 @@ module.exports = {
     {
       name: 'App Frontend',
       cwd: './frontend',
-      script: './frontend/server.js',
+      script: './server.js',
       instances: 1,
       autorestart: true,
       max_restarts: 10,
@@ -19,7 +19,8 @@ module.exports = {
     },
     {
       name: 'App Backend',
-      script: './backend/app/server.js',
+      cwd: './backend',
+      script: './app/server.js',
       instances: 1,
       autorestart: true,
       max_restarts: 10,
@@ -38,7 +39,7 @@ module.exports = {
     {
       name: 'Service Admin',
       cwd: './services/admin',
-      script: './services/admin/node_modules/react-scripts/scripts/start.js',
+      script: './node_modules/react-scripts/scripts/start.js',
       instances: 1,
       autorestart: true,
       max_restarts: 10,
@@ -56,7 +57,7 @@ module.exports = {
     {
       name: 'Service Upload',
       cwd: './services/uploader',
-      script: './services/uploader/server.js',
+      script: './server.js',
       instances: 1,
       autorestart: true,
       max_restarts: 10,
@@ -77,7 +78,7 @@ module.exports = {
     {
       name: 'Service Passport',
       cwd: './services/passport',
-      script: './services/passport/app.js',
+      script: './app.js',
       instances: 1,
       autorestart: true,
       max_restarts: 10,
