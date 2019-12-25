@@ -3,6 +3,12 @@ const axios = require('axios');
 
 const router = express.Router();
 
+const {
+  AUTH_SERVICE_WEBHOOK_ENDPOINT,
+  AUTH_SERVICE_SIGNUP_ENDPOINT,
+  AUTH_SERVICE_LOGIN_ENDPOINT,
+} = process.env;
+
 router.get('/', (req, res) => {
   res.json({
     status: true,
