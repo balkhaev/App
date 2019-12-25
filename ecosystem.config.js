@@ -70,10 +70,6 @@ module.exports = {
       env: {
         PORT: 4002,
         NODE_ENV: 'development',
-        S3_BUCKET: 'ra-storage',
-        S3_ENDPOINT: 'fra1.digitaloceanspaces.com',
-        S3_ACCESS_KEY_ID: 'T5LCKMRCNBE7Z5KHVMSN',
-        S3_SECRET_ACCESS_KEY: '0y1s+C8Mzo27avKhV1fL3XHZPLrBmy79s7MnIxP0Tgc',
       },
       env_production: {
         NODE_ENV: 'production',
@@ -82,7 +78,7 @@ module.exports = {
     {
       name: 'Service Passport',
       cwd: './services/passport',
-      script: './app.js',
+      script: './server.js',
       instances: 1,
       autorestart: true,
       max_restarts: 10,

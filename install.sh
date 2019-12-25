@@ -11,4 +11,5 @@ cd ../passport && npm i
 echo 'Passport service installed!'
 
 cd ../uploader && npm i
+[ -f .env ] || cp .env.example .env # copy example .env file if production .env file not exists
 echo 'Uploader service installed!'
