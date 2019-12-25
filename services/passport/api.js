@@ -1,12 +1,12 @@
-const passport = require('../config/passport');
-const { User } = require('../db/schema');
-const { errorHandler } = require('../db/errors');
+const express = require('express');
 
-/**
- * POST /login
- * Sign in using username and password.
- */
-exports.postLogin = async (req, res, next) => {
+const passport = require('./config/passport');
+const { User } = require('./db/schema');
+const { errorHandler } = require('./db/errors');
+
+const router = express.Router();
+
+router.post('/login', async (req, res, next) => {
   req.assert('email', 'Email is not valid').isEmail();
   req.assert('username', 'Username is not valid').notEmpty();
   req.assert('password', 'Password cannot be blank').notEmpty();
@@ -25,13 +25,9 @@ exports.postLogin = async (req, res, next) => {
       handleResponse(res, 200, user.getUser());
     }
   })(req, res, next);
-};
+});
 
-/**
- * POST /signup
- * Create a new local account.
- */
-exports.postSignup = async (req, res, next) => {
+router.post('/signup', async (req, res, next) => {
   req.assert('email', 'Email is not valid').isEmail();
   req.assert('username', 'Username is not valid').notEmpty();
   req.assert('password', 'Password must be at least 4 characters long').len(4);
@@ -65,9 +61,9 @@ exports.postSignup = async (req, res, next) => {
       handleResponse(res, 200, user.getUser());
     }
   })(req, res, next);
-};
+});
 
-exports.getWebhook = async (req, res, next) => {
+router.get('/webhook', async (req, res, next) => {
   passport.authenticate('bearer', (err, user, info) => {
     if (err) {
       return handleResponse(res, 401, { error: err });
@@ -81,8 +77,10 @@ exports.getWebhook = async (req, res, next) => {
       handleResponse(res, 200, { 'X-Hasura-Role': 'anonymous' });
     }
   })(req, res, next);
-};
+})
 
 function handleResponse(res, code, statusMsg) {
   res.status(code).json(statusMsg);
 }
+
+module.exports = router;

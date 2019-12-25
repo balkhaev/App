@@ -15,11 +15,6 @@ const expressValidator = require('express-validator');
 dotenv.load();
 
 /**
- * Controllers (route handlers).
- */
-const userController = require('./controllers/user');
-
-/**
  * Create Express server.
  */
 const app = express();
@@ -35,9 +30,7 @@ app.use(expressValidator());
 app.use(passport.initialize());
 app.use(passport.session());
 
-app.post('/login', userController.postLogin);
-app.post('/signup', userController.postSignup);
-app.get('/webhook', userController.getWebhook);
+app.post('/api', require('./api'));
 
 /**
  * Start Express server.
