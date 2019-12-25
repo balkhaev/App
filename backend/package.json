@@ -4,7 +4,7 @@
   "description": "Kinovert centralizing backend",
   "main": "app/server.js",
   "scripts": {
-    "start": "nodemon remote-schema/index & nodemon app/index"
+    "start": "nodemon app/server"
   },
   "keywords": [],
   "author": "",

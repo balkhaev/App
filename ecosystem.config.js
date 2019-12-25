@@ -27,10 +27,10 @@ module.exports = {
       watch: true,
       max_memory_restart: '1G',
       env: {
-        PORT: 5000,
+        PORT: 4000,
         NODE_ENV: 'development',
-        AUTH_SERVICE_LOGIN_ENDPOINT: 'http://localhost:5003/login',
-        AUTH_SERVICE_SIGNUP_ENDPOINT: 'http://localhost:5003/signup',
+        AUTH_SERVICE_LOGIN_ENDPOINT: 'http://localhost:4003/login',
+        AUTH_SERVICE_SIGNUP_ENDPOINT: 'http://localhost:4003/signup',
       },
       env_production: {
         NODE_ENV: 'production',
@@ -46,7 +46,7 @@ module.exports = {
       watch: false,
       max_memory_restart: '1G',
       env: {
-        PORT: 5001,
+        PORT: 4001,
         BROWSER: 'none',
         NODE_ENV: 'development',
       },
@@ -64,7 +64,7 @@ module.exports = {
       watch: true,
       max_memory_restart: '1G',
       env: {
-        PORT: 5002,
+        PORT: 4002,
         NODE_ENV: 'development',
         S3_BUCKET: 'ra-storage',
         S3_ENDPOINT: 'fra1.digitaloceanspaces.com',
@@ -85,7 +85,7 @@ module.exports = {
       watch: true,
       max_memory_restart: '1G',
       env: {
-        PORT: 5003,
+        PORT: 4003,
         NODE_ENV: 'development',
       },
       env_production: {
