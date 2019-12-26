@@ -8,7 +8,8 @@
     "prod": "pm2 startOrRestart ecosystem.config.js --update-env --env production",
     "start": "npm run dev",
     "install": "./.bin/install.sh",
-    "bumpMajor": "./.bin/bumpMajor.sh"
+    "bumpMajor": "./.bin/bumpMajor.sh",
+    "deploy-staging": "pm2 deploy ecosystem.config.js staging --force --env production"
   },
   "keywords": [],
   "author": "Mikhail Balkhaev",
