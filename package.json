@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "pm2 startOrRestart ecosystem.config.js --update-env"
+    "start": "pm2 startOrRestart ecosystem.config.js --update-env",
+    "install": "./bin/install.sh"
   },
   "keywords": [],
   "author": "Mikhail Balkhaev",

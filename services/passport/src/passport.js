@@ -1,18 +1,18 @@
 const passport = require('passport');
 const { Strategy: LocalStrategy } = require('passport-local');
 const { Strategy: BearerStrategy } = require('passport-http-bearer');
-const { User } = require('../db/schema');
-const { errorHandler } = require('../db/errors');
+const { User } = require('./db/schema');
+const { errorHandler } = require('./db/errors');
 
 passport.use(
   new LocalStrategy(
     {
-      usernameField: 'username',
+      usernameField: 'email',
       passwordField: 'password',
     },
-    function(username, password, done) {
+    function(email, password, done) {
       User.query()
-        .where('username', username)
+        .where('email', email)
         .first()
         .then(function(user) {
           if (!user) {

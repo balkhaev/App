@@ -1,14 +1,9 @@
 {
   "name": "kinovert-service-passport",
   "version": "0.0.0",
-  "engines": {
-    "node": "8.9.1"
-  },
   "description": "A service for Kinovert auth webhook with passport js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node app.js",
-    "lint": "eslint \"**/*.js\"",
+    "start": "node src/server.js",
     "migrate": "knex migrate:latest"
   },
   "author": "Mikhail Balkhaev",
