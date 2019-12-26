@@ -76,7 +76,7 @@ module.exports = {
       ref: 'origin/master',
       repo: ' git@lab.datascreen.ru:balkhaev/kinovert.git',
       path: '/home/node/kinovert',
-      'post-deploy': 'chmod +x ./.bin/install.sh && ./.bin/install.sh && npm run prod && pm2 save',
+      'post-deploy': './.bin/install.sh && npm run prod && pm2 save',
     },
   },
 };
