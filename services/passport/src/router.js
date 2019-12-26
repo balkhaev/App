@@ -67,12 +67,18 @@ router.post('/signup', async (req, res, next) => {
 });
 
 router.get('/webhook', async (req, res, next) => {
+  console.log(req);
+
   passport.authenticate('bearer', (err, user, info) => {
     if (err) {
       return handleResponse(res, 401, { error: err });
     }
 
+    console.log(user);
+
     if (user) {
+      const { id, role = 'user' } = user;
+
       handleResponse(res, 200, {
         'X-Hasura-Role': role,
         'X-Hasura-User-Id': id,
