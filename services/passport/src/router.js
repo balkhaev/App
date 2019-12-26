@@ -1,13 +1,14 @@
 const express = require('express');
 
 const passport = require('./passport');
-const { User } = require('./db/schema');
+const User = require('./db/userSchema');
 const { errorHandler } = require('./db/errors');
 
 const router = express.Router();
 
 router.post('/login', async (req, res, next) => {
-  req.assert('username', 'Username is not valid').notEmpty();
+  req.assert('email', 'Email cannot be blank').notEmpty();
+  req.assert('email', 'Email is not valid').isEmail();
   req.assert('password', 'Password cannot be blank').notEmpty();
 
   const errors = req.validationErrors();
@@ -16,12 +17,15 @@ router.post('/login', async (req, res, next) => {
     return res.status(400).json({ errors: errors });
   }
 
-  passport.authenticate('local', (err, user, info) => {
+  passport.authenticate('local', async (err, user, info) => {
     if (err) {
       return handleResponse(res, 400, { error: err });
     }
+
     if (user) {
-      handleResponse(res, 200, user.getUser());
+      const response = await user.getUser();
+
+      handleResponse(res, 200, response);
     }
   })(req, res, next);
 });
@@ -70,8 +74,8 @@ router.get('/webhook', async (req, res, next) => {
 
     if (user) {
       handleResponse(res, 200, {
-        'X-Hasura-Role': 'user',
-        'X-Hasura-User-Id': `${user.id}`,
+        'X-Hasura-Role': role,
+        'X-Hasura-User-Id': id,
       });
     } else {
       handleResponse(res, 200, { 'X-Hasura-Role': 'anonymous' });

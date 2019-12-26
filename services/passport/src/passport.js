@@ -1,8 +1,7 @@
 const passport = require('passport');
 const { Strategy: LocalStrategy } = require('passport-local');
 const { Strategy: BearerStrategy } = require('passport-http-bearer');
-const { User } = require('./db/schema');
-const { errorHandler } = require('./db/errors');
+const User = require('./db/userSchema');
 
 passport.use(
   new LocalStrategy(
@@ -46,6 +45,7 @@ passport.use(
         if (!user) {
           return done('Invalid Token');
         }
+
         return done(null, user);
       })
       .catch(function(err) {

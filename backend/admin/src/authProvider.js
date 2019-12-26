@@ -1,13 +1,30 @@
 import axios from 'axios';
 
 const authProvider = {
-  login: async params => {
-    const request = await axios.post(process.env.REACT_APP_SERVICE_AUTH_LOGIN_ENDPOINT);
+  login: async ({ username, password }) => {
+    const { data } = await axios({
+      method: 'POST',
+      data: JSON.stringify({ email: username, password }),
+      headers: { 'content-type': 'application/json' },
+      url: process.env.REACT_APP_SERVICE_AUTH_LOGIN_ENDPOINT,
+    });
+
+    localStorage.setItem('role', data.role);
+    localStorage.setItem('token', data.token);
   },
-  logout: params => Promise.resolve(),
-  checkAuth: params => Promise.resolve(),
+  logout: async () => {
+    localStorage.removeItem('role');
+    localStorage.removeItem('token');
+  },
+  checkAuth: async params => {
+    return localStorage.getItem('token') ? true : Promise.reject();
+  },
   checkError: error => Promise.resolve(),
-  getPermissions: params => Promise.resolve(),
+  getPermissions: async params => {
+    const role = localStorage.getItem('role');
+
+    return role ? role : 'anonymous';
+  },
 };
 
 export default authProvider;

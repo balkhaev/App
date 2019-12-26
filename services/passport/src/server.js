@@ -1,9 +1,10 @@
-const express = require('express');
-const bodyParser = require('body-parser');
-const chalk = require('chalk');
-const dotenv = require('dotenv');
-const passport = require('passport');
 const expressValidator = require('express-validator');
+const bodyParser = require('body-parser');
+const passport = require('passport');
+const express = require('express');
+const dotenv = require('dotenv');
+const chalk = require('chalk');
+const cors = require('cors');
 
 dotenv.load();
 
@@ -12,11 +13,12 @@ const app = express();
 
 app.set('host', '0.0.0.0');
 app.set('port', process.env.PORT || 8080);
-app.set('json spaces', 2);
-app.use(bodyParser.json());
+app.use(express.json());
+app.use(bodyParser.urlencoded());
 app.use(expressValidator());
 app.use(passport.initialize());
 app.use(passport.session());
+app.use(cors())
 
 app.use(router);
 
