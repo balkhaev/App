@@ -72,13 +72,13 @@ router.get('/webhook', async (req, res, next) => {
   if (req.headers['user-agent'] === hasuraUA && req.headers['x-hasura-role']) {
     handleResponse(res, 200, { 'X-Hasura-Role': req.headers['x-hasura-role'] });
   } else {
-    passport.authenticate('bearer', (err, user, info) => {
+    passport.authenticate('bearer', async (err, user, info) => {
       if (err) {
         return handleResponse(res, 401, { error: err });
       }
 
       if (user) {
-        const { id, role = 'user' } = user;
+        const { id, role = 'user' } = await user.getUser();
 
         handleResponse(res, 200, {
           'X-Hasura-Role': `${role}`,
