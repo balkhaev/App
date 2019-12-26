@@ -66,27 +66,29 @@ router.post('/signup', async (req, res, next) => {
   })(req, res, next);
 });
 
+const hasuraUA = 'hasura-graphql-engine/v1.0.0';
+
 router.get('/webhook', async (req, res, next) => {
-  console.log(req.headers);
+  if (req.headers['user-agent'] === hasuraUA && req.headers['x-hasura-role']) {
+    handleResponse(res, 200, { 'X-Hasura-Role': req.headers['x-hasura-role'] });
+  } else {
+    passport.authenticate('bearer', (err, user, info) => {
+      if (err) {
+        return handleResponse(res, 401, { error: err });
+      }
 
-  passport.authenticate('bearer', (err, user, info) => {
-    if (err) {
-      return handleResponse(res, 401, { error: err });
-    }
+      if (user) {
+        const { id, role = 'user' } = user;
 
-    console.log(user);
-
-    if (user) {
-      const { id, role = 'user' } = user;
-
-      handleResponse(res, 200, {
-        'X-Hasura-Role': role,
-        'X-Hasura-User-Id': id,
-      });
-    } else {
-      handleResponse(res, 200, { 'X-Hasura-Role': 'anonymous' });
-    }
-  })(req, res, next);
+        handleResponse(res, 200, {
+          'X-Hasura-Role': role,
+          'X-Hasura-User-Id': id,
+        });
+      } else {
+        handleResponse(res, 200, { 'X-Hasura-Role': 'anonymous' });
+      }
+    })(req, res, next);
+  }
 });
 
 function handleResponse(res, code, statusMsg) {

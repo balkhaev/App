@@ -42,9 +42,9 @@ router.post('/login', async (req, res, next) => {
 
 router.get('/webhook', async (req, res, next) => {
   const { data } = await axios({
-    url: SERVICE_AUTH_WEBHOOK_ENDPOINT,
     method: 'GET',
     headers: req.headers,
+    url: SERVICE_AUTH_WEBHOOK_ENDPOINT,
     data: req.body,
   }).catch(e => {
     next(e);
