@@ -10,7 +10,9 @@ import {
   TextField,
   EditButton,
   TextInput,
-  DateInput,
+  SelectInput,
+  ReferenceField,
+  ReferenceInput,
   Show,
   SimpleShowLayout,
 } from 'react-admin';
@@ -24,6 +26,9 @@ export const UserList = props => (
       <TextField source="username" />
       <TextField source="email" />
       <TextField source="token" />
+      <ReferenceField source="role_id" reference="roles">
+        <TextField source="name" />
+      </ReferenceField>
       <DateField label="Create date" source="created_at" />
       <EditButton basePath="/users" />
     </Datagrid>
@@ -40,6 +45,9 @@ export const UserEdit = props => (
       <TextInput disabled source="id" />
       <TextInput source="username" />
       <TextInput source="email" />
+      <ReferenceInput source="role_id" reference="roles">
+        <SelectInput source="name" />
+      </ReferenceInput>
       <TextInput source="password" />
       <TextField disabled source="token" />
       <DateField disabled label="Create date" source="created_at" />
@@ -63,9 +71,12 @@ export const UserShow = props => (
       <TextField source="id" />
       <TextField source="username" />
       <TextField source="email" />
-      <TextField source="password" />
-      <DateField label="Create date" source="created_at" />
-      <DateField label="Update date" source="updated_at" />
+      <ReferenceField source="role_id" reference="roles">
+        <TextField source="name" />
+      </ReferenceField>
+      <TextField source="token" />
+      <DateField label="Created date" source="created_at" />
+      <DateField label="Updated date" source="updated_at" />
     </SimpleShowLayout>
   </Show>
 );

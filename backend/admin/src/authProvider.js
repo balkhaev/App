@@ -19,7 +19,18 @@ const authProvider = {
   checkAuth: async params => {
     return localStorage.getItem('token') ? true : Promise.reject();
   },
-  checkError: error => Promise.resolve(),
+  checkError: error => {
+    const status = error.status;
+
+    if (status === 401 || status === 403) {
+      localStorage.removeItem('role');
+      localStorage.removeItem('token');
+
+      return Promise.reject();
+    }
+
+    return Promise.resolve();
+  },
   getPermissions: async params => {
     const role = localStorage.getItem('role');
 

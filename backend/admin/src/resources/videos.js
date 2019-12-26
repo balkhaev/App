@@ -26,7 +26,7 @@ export const VideoList = props => (
       <TextField source="id" />
       <TextField source="title" />
       <ReferenceField source="author_id" reference="users">
-        <TextField source="name" />
+        <TextField source="username" />
       </ReferenceField>
       <DateField label="Create date" source="created_at" />
       <DateField label="Update date" source="updated_at" />
@@ -45,7 +45,7 @@ export const VideoEdit = props => (
       <TextInput disabled source="id" />
       <TextInput source="title" />
       <ReferenceInput source="author_id" reference="users">
-        <SelectInput source="name" />
+        <SelectInput source="id" />
       </ReferenceInput>
     </SimpleForm>
   </Edit>
@@ -56,7 +56,7 @@ export const VideoCreate = props => (
     <SimpleForm>
       <TextInput source="title" />
       <ReferenceInput source="author_id" reference="users">
-        <SelectInput source="name" />
+        <SelectInput source="username" />
       </ReferenceInput>
     </SimpleForm>
   </Create>
@@ -68,7 +68,7 @@ export const VideoShow = props => (
       <TextField source="id" />
       <TextField source="title" />
       <ReferenceField source="author_id" reference="users">
-        <TextField source="name" />
+        <TextField source="username" />
       </ReferenceField>
       <DateField label="Create date" source="created_at" />
       <DateField label="Update date" source="updated_at" />
