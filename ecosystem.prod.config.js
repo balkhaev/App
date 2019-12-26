@@ -1,5 +1,1 @@
-const ecosystem = require('./ecosystem.config');
-
-ecosystem.apps.push();
-
-module.exports = ecosystem;
+module.exports = require('./ecosystem.config');

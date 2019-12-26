@@ -1,6 +1,20 @@
 module.exports = {
   apps: [
     {
+      name: 'App Frontend',
+      cwd: './frontend',
+      script: './server.js',
+      instances: 1,
+      autorestart: true,
+      max_restarts: 10,
+      watch: false,
+      max_memory_restart: '1G',
+      env: {
+        PORT: 3000,
+        NODE_ENV: 'development',
+      },
+    },
+    {
       name: 'App Backend',
       cwd: './backend',
       script: './api/server.js',
@@ -52,20 +66,6 @@ module.exports = {
       },
       env_production: {
         NODE_ENV: 'production',
-      },
-    },
-    {
-      name: 'App Frontend',
-      cwd: './frontend',
-      script: './server.js',
-      instances: 1,
-      autorestart: true,
-      max_restarts: 10,
-      watch: false,
-      max_memory_restart: '1G',
-      env: {
-        PORT: 3000,
-        NODE_ENV: 'development',
       },
     },
   ],
