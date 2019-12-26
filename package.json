@@ -1,11 +1,14 @@
 {
   "name": "kinovert",
   "version": "0.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "Вертикализированный онлайн кинотеатр",
+  "main": "ecosystem.config.js",
   "scripts": {
-    "start": "pm2 startOrRestart ecosystem.config.js --update-env",
-    "install": "./bin/install.sh"
+    "dev": "pm2 startOrRestart ecosystem.dev.config.js --update-env --env development",
+    "prod": "pm2 startOrRestart ecosystem.config.js --update-env --env production",
+    "start": "npm run dev",
+    "install": "./.bin/install.sh",
+    "bumpMajor": "./.bin/bumpMajor.sh"
   },
   "keywords": [],
   "author": "Mikhail Balkhaev",
