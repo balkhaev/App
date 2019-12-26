@@ -81,8 +81,8 @@ router.get('/webhook', async (req, res, next) => {
         const { id, role = 'user' } = user;
 
         handleResponse(res, 200, {
-          'X-Hasura-Role': role,
-          'X-Hasura-User-Id': id,
+          'X-Hasura-Role': `${role}`,
+          'X-Hasura-User-Id': `${id}`,
         });
       } else {
         handleResponse(res, 200, { 'X-Hasura-Role': 'anonymous' });
