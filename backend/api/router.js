@@ -3,20 +3,20 @@ const axios = require('axios');
 
 const router = express.Router();
 
-const {
-  SERVICE_AUTH_WEBHOOK_ENDPOINT,
-  SERVICE_AUTH_SIGNUP_ENDPOINT,
-  SERVICE_AUTH_LOGIN_ENDPOINT,
-} = process.env;
+const { SERVICE_AUTH_WEBHOOK_ENDPOINT, SERVICE_AUTH_SIGNUP_ENDPOINT, SERVICE_AUTH_LOGIN_ENDPOINT } = process.env;
 
 router.use('/', express.static('./admin/build'));
 
 router.post('/signup', async (req, res, next) => {
-  const { data } = await axios.post(SERVICE_AUTH_SIGNUP_ENDPOINT, req.body)
-    .catch(e => {
-      next(e);
-    });
-    // Тут будут кастомные обработчики ошибок от сервиса и генерирование своих человеко-читаемых.
+  const { data } = await axios({
+    url: SERVICE_AUTH_SIGNUP_ENDPOINT,
+    method: 'POST',
+    headers: req.headers,
+    data: req.body,
+  }).catch(e => {
+    next(e);
+  });
+  // Тут будут кастомные обработчики ошибок от сервиса и генерирование своих человеко-читаемых.
 
   res.json({
     status: true,
@@ -25,7 +25,12 @@ router.post('/signup', async (req, res, next) => {
 });
 
 router.post('/login', async (req, res, next) => {
-  const { data } = await axios.post(SERVICE_AUTH_LOGIN_ENDPOINT, req.body).catch(e => {
+  const { data } = await axios({
+    url: SERVICE_AUTH_LOGIN_ENDPOINT,
+    method: 'POST',
+    headers: req.headers,
+    data: req.body,
+  }).catch(e => {
     next(e);
   });
 
@@ -36,7 +41,12 @@ router.post('/login', async (req, res, next) => {
 });
 
 router.get('/webhook', async (req, res, next) => {
-  const { data } = await axios.get(SERVICE_AUTH_WEBHOOK_ENDPOINT, req.body).catch(e => {
+  const { data } = await axios({
+    url: SERVICE_AUTH_WEBHOOK_ENDPOINT,
+    method: 'GET',
+    headers: req.headers,
+    data: req.body,
+  }).catch(e => {
     next(e);
   });
 
