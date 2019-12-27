@@ -1,0 +1,31 @@
+image: "${CI_REGISTRY}/devops/base-images/node-deploy:latest"
+
+stages:
+  - build
+  - deploy
+
+before_script:
+  - npm set progress=false
+
+build project:
+  stage: build
+  script:
+    - ./.bin/install.sh
+  only:
+    refs:
+      - master
+
+deploy to frontend:
+  stage: deploy
+  script:
+    - mkdir -p ~/.ssh && chmod 700 ~/.ssh
+    - eval $(ssh-agent -s)
+    - echo "$STAGING_PRIVATE_KEY" | tr -d '\r' | ssh-add - > /dev/null
+    - echo "$STAGING_SERVER_HOSTKEYS" > ~/.ssh/known_hosts && chmod 644 ~/.ssh/known_hosts
+    - echo 'Deploy to staging...'
+    - npm run deploy-staging
+  only:
+    - master
+  environment:
+    name: staging
+    url: https://staging.mvs.wtf
