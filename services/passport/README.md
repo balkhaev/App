@@ -1,22 +1,21 @@
 # Auth Service
 
-Сервис авторизации на passport.js, knex и objection. Подключается к PostgreSQL.
+Сервис авторизации на express, passport.js, knex и objection. Подключается к PostgreSQL. Имеет 3 ручки - `/login`, `/signup`, `/webhook`.
 
 ### Install
 
 ```bash
 npm i kinovert-service-passport
 
-# Create .env file
 echo 'DATABASE_URL=postgres://<username>:<password>@<host>:<port>/<database_name>' >> .env
 
 # Apply migrations
 node ./node_modules/kinovert-serivce-passport/.bin/migrate
 
-# Then simply start your app
 touch server.js
 ```
 
+`server.js`
 ```javascript
 // authService = express app
 const authService = require('kinovert-service-passport');
@@ -37,14 +36,16 @@ authService.setup({
   onWebhook(req, next) {},
 });
 
-authService.listen(8080);
+authService.listen(5005, () => {
+  console.log('Auth service at http://localhost:5005');
+});
 ```
 
 ## Usage
 
-### Signup/Login
+### Signup
 
-После того как мы запустили локальный сервис, можно сделать обращение к `/signup` API следующим образом:
+При запросе ручке `/signup` происходит валидация входящих данных и objection запрос в бд. Если дернуть ее следующим образом:
 
 ```bash
 curl -H "Content-Type: application/json" \
@@ -52,7 +53,7 @@ curl -H "Content-Type: application/json" \
      http://localhost:8080/signup
 ```
 
-На валидный запрос, вы получите ответ:
+Вы должны получить ответ:
 
 ```json
 {
@@ -63,13 +64,17 @@ curl -H "Content-Type: application/json" \
 }
 ```
 
-После чего можно дернуть ручку `/login` чтобы получить его токен,
+### Login
+
+Валидирует входящий JSON и производит аутентификацию. Если дернуть ручку так:
 
 ```bash
 curl -H "Content-Type: application/json" \
      -d'{"email": "test@user.ru", "password": "test123"}' \
      http://localhost:8080/login
 ```
+
+То получите тот же ответ, что и при `/signup` запросе.
 
 ### Webhook для GraphQL Engine
 

@@ -69,26 +69,20 @@ Next.js приложение с Material.io и Apollo клиентом подк�
 Сервис загрузки файлов, содержит 1 ручку:
 
 - POST **/upload** - проверяем заголовки и отправляем файл в s3, на выходе
-
-```javascript
+```json
+[
   {
-    // ...
-    key: (req, file, cb) => {
-      const uuid = uuidv4();
-      const key = `${req.s3_key_prefix}${uuid}`;
-
-      req.saved_files.push({
-        originalname: file.originalname,
-        mimetype: file.mimetype,
-        encoding: file.encoding,
-        key,
-      });
-
-      cb(null, key);
-    },
-    // ...
+    "originalname": "filename.exe",
+    "mimetype": "application/exe",
+    "encoding": "utf8",
+    "key": "${req.headers['x-path']}/${uuid}"
   }
+]
 ```
+
+### Sendi
+
+Альтернативный сервис для загрузки файлов, реализация [TusD](https://github.com/tus/tusd)
 
 ### Cinematic
 
