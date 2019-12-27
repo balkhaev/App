@@ -45,7 +45,7 @@ export const VideoEdit = props => (
       <TextInput disabled source="id" />
       <TextInput source="title" />
       <ReferenceInput source="author_id" reference="users">
-        <SelectInput source="id" />
+        <SelectInput source="username" />
       </ReferenceInput>
     </SimpleForm>
   </Edit>

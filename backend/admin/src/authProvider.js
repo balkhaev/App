@@ -2,6 +2,8 @@ import axios from 'axios';
 
 const authProvider = {
   login: async ({ username, password }) => {
+    console.log(process.env.REACT_APP_SERVICE_AUTH_LOGIN_ENDPOINT);
+
     const { data } = await axios({
       method: 'POST',
       data: JSON.stringify({ email: username, password }),
