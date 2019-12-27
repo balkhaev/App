@@ -13,5 +13,8 @@
   },
   "keywords": [],
   "author": "Mikhail Balkhaev",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "pm2": "^4.2.1"
+  }
 }

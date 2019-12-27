@@ -1,3 +1,6 @@
+npm i
+echo 'Kinovert depends installed!'
+
 cd backend
 npm i
 echo 'Backend installed!'
