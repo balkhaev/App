@@ -23,9 +23,7 @@ router.post('/login', async (req, res, next) => {
     }
 
     if (user) {
-      const response = await user.getUser();
-
-      handleResponse(res, 200, response);
+      handleResponse(res, 200, await user.getUser());
     }
   })(req, res, next);
 });
@@ -55,13 +53,13 @@ router.post('/signup', async (req, res, next) => {
     return;
   }
 
-  passport.authenticate('local', (err, user, info) => {
+  passport.authenticate('local', async (err, user, info) => {
     if (err) {
       return handleResponse(res, 400, { error: err });
     }
 
     if (user) {
-      handleResponse(res, 200, user.getUser());
+      handleResponse(res, 200, await user.getUser());
     }
   })(req, res, next);
 });
