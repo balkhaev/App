@@ -3,6 +3,7 @@ const bodyParser = require('body-parser');
 const passport = require('passport');
 const express = require('express');
 const dotenv = require('dotenv');
+const morgan = require('morgan');
 const chalk = require('chalk');
 const cors = require('cors');
 
@@ -18,7 +19,8 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(expressValidator());
 app.use(passport.initialize());
 app.use(passport.session());
-app.use(cors())
+app.use(morgan('combined'));
+app.use(cors());
 
 app.use(router);
 
