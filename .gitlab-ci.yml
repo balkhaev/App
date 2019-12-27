@@ -23,6 +23,7 @@ deploy to frontend:
     - echo "$STAGING_PRIVATE_KEY" | tr -d '\r' | ssh-add - > /dev/null
     - echo "$STAGING_SERVER_HOSTKEYS" > ~/.ssh/known_hosts && chmod 644 ~/.ssh/known_hosts
     - echo 'Deploy to staging...'
+    - npm i
     - npm run deploy-staging
   only:
     - master
