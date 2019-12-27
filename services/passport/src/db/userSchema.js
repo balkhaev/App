@@ -1,9 +1,11 @@
 const { promisify } = require('util');
-const Knex = require('knex');
-const connection = require('../../knexfile');
 const { Model } = require('objection');
 const bcrypt = require('bcrypt');
 const crypto = require('crypto');
+const Knex = require('knex');
+
+const connection = require('../../knexfile');
+const Role = require('./roleSchema');
 
 const knexConnection = Knex(connection);
 const randomBytesAsync = promisify(crypto.randomBytes);
@@ -32,10 +34,14 @@ class User extends Model {
   }
 
   async $beforeInsert() {
+    // Crypt password
     const salt = bcrypt.genSaltSync();
     this.password = await bcrypt.hash(this.password, salt);
-    const createRandomToken = await randomBytesAsync(16).then(buf => buf.toString('hex'));
-    this.token = createRandomToken;
+    this.token = await randomBytesAsync(16).then(buf => buf.toString('hex'));
+
+    // Setting user role
+    const role = await Role.query().findOne({ name: 'user' });
+    this.role_id = role.id;
   }
 
   verifyPassword(password, callback) {
@@ -57,8 +63,6 @@ class User extends Model {
   }
 
   static get relationMappings() {
-    const Role = require('./roleSchema');
-
     return {
       role: {
         relation: Model.BelongsToOneRelation,

@@ -11,7 +11,6 @@ import {
   EditButton,
   TextInput,
   SelectInput,
-  DateInput,
   Show,
   SimpleShowLayout,
   ReferenceInput,
