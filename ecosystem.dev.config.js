@@ -1,4 +1,4 @@
-const ecosystem = require('./ecosystem.config');
+const ecosystem = require('./ecosystem.prod.config');
 
 ecosystem.apps.push(
   {

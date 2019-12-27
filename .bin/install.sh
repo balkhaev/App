@@ -17,7 +17,7 @@ echo 'Frontend builded!'
 cd ../services/passport
 npm i
 echo 'Passport service installed!'
-[ -f .env ] || cp .env.example .env # copy example .env file if production .env file not exists
+[ -f .env ] || cp .env.example .env # copy example .env file if production .env not exists
 echo 'Passport service envs copied!'
 
 cd ../uploader

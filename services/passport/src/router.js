@@ -73,7 +73,7 @@ const hasuraUA = 'hasura-graphql-engine/v1.0.0';
 router.get('/webhook', async (req, res, next) => {
   if (req.headers['user-agent'] === hasuraUA && req.headers['x-hasura-role']) {
     handleResponse(res, 200, {
-      'X-Hasura-Role': req.headers['x-hasura-role']
+      'X-Hasura-Role': req.headers['x-hasura-role'] || 'admin',
     });
   } else {
     passport.authenticate('bearer', async (err, user, info) => {
