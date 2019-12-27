@@ -36,11 +36,13 @@ class User extends Model {
   async $beforeInsert() {
     // Crypt password
     const salt = bcrypt.genSaltSync();
+
     this.password = await bcrypt.hash(this.password, salt);
     this.token = await randomBytesAsync(16).then(buf => buf.toString('hex'));
 
     // Setting user role
     const role = await Role.query().findOne({ name: 'user' });
+
     this.role_id = role.id;
   }
 

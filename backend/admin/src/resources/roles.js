@@ -10,11 +10,9 @@ import {
   TextField,
   EditButton,
   TextInput,
-  SelectInput,
   DateInput,
   Show,
   SimpleShowLayout,
-  ReferenceInput,
   ReferenceField,
 } from 'react-admin';
 

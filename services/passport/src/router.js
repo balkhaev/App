@@ -6,6 +6,10 @@ const { errorHandler } = require('./db/errors');
 
 const router = express.Router();
 
+const handleResponse = (res, code, statusMsg) => {
+  res.status(code).json(statusMsg);
+}
+
 router.post('/login', async (req, res, next) => {
   req.assert('email', 'Email cannot be blank').notEmpty();
   req.assert('email', 'Email is not valid').isEmail();
@@ -68,7 +72,9 @@ const hasuraUA = 'hasura-graphql-engine/v1.0.0';
 
 router.get('/webhook', async (req, res, next) => {
   if (req.headers['user-agent'] === hasuraUA && req.headers['x-hasura-role']) {
-    handleResponse(res, 200, { 'X-Hasura-Role': req.headers['x-hasura-role'] });
+    handleResponse(res, 200, {
+      'X-Hasura-Role': req.headers['x-hasura-role']
+    });
   } else {
     passport.authenticate('bearer', async (err, user, info) => {
       if (err) {
@@ -83,14 +89,12 @@ router.get('/webhook', async (req, res, next) => {
           'X-Hasura-User-Id': `${id}`,
         });
       } else {
-        handleResponse(res, 200, { 'X-Hasura-Role': 'anonymous' });
+        handleResponse(res, 200, {
+          'X-Hasura-Role': 'anonymous'
+        });
       }
     })(req, res, next);
   }
 });
-
-function handleResponse(res, code, statusMsg) {
-  res.status(code).json(statusMsg);
-}
 
 module.exports = router;

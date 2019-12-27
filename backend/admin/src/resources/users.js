@@ -28,6 +28,9 @@ export const UserList = props => (
       <ReferenceField source="role_id" reference="roles">
         <TextField source="name" />
       </ReferenceField>
+      <ReferenceField source="company_id" reference="companies">
+        <TextField source="name" />
+      </ReferenceField>
       <DateField source="created_at" />
       <EditButton basePath="/users" />
     </Datagrid>
@@ -47,6 +50,9 @@ export const UserEdit = props => (
       <ReferenceInput source="role_id" reference="roles">
         <SelectInput source="name" />
       </ReferenceInput>
+      <ReferenceInput source="company_id" reference="companies">
+        <SelectInput source="name" />
+      </ReferenceInput>
       <TextInput source="password" />
       <TextField disabled source="token" />
       <DateField disabled label="Create date" source="created_at" />
@@ -63,6 +69,9 @@ export const UserCreate = props => (
       <ReferenceInput source="role_id" reference="roles">
         <SelectInput source="name" />
       </ReferenceInput>
+      <ReferenceInput source="company_id" reference="companies">
+        <SelectInput source="name" />
+      </ReferenceInput>
       <TextInput source="token" />
     </SimpleForm>
   </Create>
@@ -75,6 +84,9 @@ export const UserShow = props => (
       <TextField source="username" />
       <TextField source="email" />
       <ReferenceField source="role_id" reference="roles">
+        <TextField source="name" />
+      </ReferenceField>
+      <ReferenceField source="company_id" reference="companies">
         <TextField source="name" />
       </ReferenceField>
       <TextField source="token" />
