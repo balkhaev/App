@@ -34,12 +34,25 @@ router.post('/login', async (req, res, next) => {
   res.json(data);
 });
 
-router.get('/callback/auth', async (req, res, next) => {
+router.get('/webhook/auth', async (req, res, next) => {
   const { data } = await axios({
     method: 'GET',
     headers: req.headers,
     url: SERVICE_AUTH_WEBHOOK_ENDPOINT,
     data: req.body,
+  }).catch(e => {
+    next(e);
+  });
+
+  res.json(data);
+});
+
+router.get('/webhook/file', async (req, res, next) => {
+  const { data } = await axios({
+    url: SERVICE_AUTH_WEBHOOK_ENDPOINT,
+    method: 'GET',
+    data: req.body,
+    headers: req.headers,
   }).catch(e => {
     next(e);
   });
