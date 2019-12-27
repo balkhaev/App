@@ -18,10 +18,7 @@ router.post('/signup', async (req, res, next) => {
   });
   // Тут будут кастомные обработчики ошибок от сервиса и генерирование своих человеко-читаемых.
 
-  res.json({
-    status: true,
-    data,
-  });
+  res.json(data);
 });
 
 router.post('/login', async (req, res, next) => {
@@ -34,13 +31,10 @@ router.post('/login', async (req, res, next) => {
     next(e);
   });
 
-  res.json({
-    status: true,
-    data,
-  });
+  res.json(data);
 });
 
-router.get('/webhook', async (req, res, next) => {
+router.get('/callback/auth', async (req, res, next) => {
   const { data } = await axios({
     method: 'GET',
     headers: req.headers,

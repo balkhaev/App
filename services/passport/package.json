@@ -4,7 +4,8 @@
   "description": "A service for Kinovert auth webhook with passport js",
   "scripts": {
     "start": "node src/server.js",
-    "migrate": "knex migrate:latest"
+    "migrate": "knex migrate:latest",
+    "test": "jest"
   },
   "author": "Mikhail Balkhaev",
   "license": "MIT",
@@ -17,6 +18,7 @@
     "dotenv": "^6.0.0",
     "express": "^4.16.3",
     "express-validator": "^5.3.0",
+    "jest-puppeteer": "^4.4.0",
     "knex": "^0.15.2",
     "objection": "^1.2.6",
     "objection-db-errors": "^1.0.0",
@@ -24,6 +26,11 @@
     "passport-http-bearer": "^1.0.1",
     "passport-local": "^1.0.0",
     "pg": "^7.4.3",
+    "puppeteer": "^2.0.0",
     "util": "^0.11.0"
+  },
+  "devDependencies": {
+    "jest": "^24.9.0",
+    "supertest": "^4.0.2"
   }
 }

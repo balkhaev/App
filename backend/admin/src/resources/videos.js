@@ -11,6 +11,8 @@ import {
   EditButton,
   TextInput,
   SelectInput,
+  FileInput,
+  FileField,
   Show,
   SimpleShowLayout,
   ReferenceInput,
@@ -46,6 +48,9 @@ export const VideoEdit = props => (
       <ReferenceInput source="author_id" reference="users">
         <SelectInput source="username" optionText="username" />
       </ReferenceInput>
+      <FileInput source="files" label="Video file" accept="application/mp4">
+        <FileField source="src" title="title" />
+      </FileInput>
     </SimpleForm>
   </Edit>
 );
@@ -57,6 +62,9 @@ export const VideoCreate = props => (
       <ReferenceInput source="author_id" reference="users">
         <SelectInput source="username" optionText="username" />
       </ReferenceInput>
+      <FileInput source="files" label="Related files" accept="application/pdf">
+        <FileField source="src" title="title" />
+      </FileInput>
     </SimpleForm>
   </Create>
 );
