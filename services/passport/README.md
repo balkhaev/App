@@ -1,4 +1,4 @@
-# Passport.js Auth Webhook
+# Auth Service
 
 Сервис авторизации на passport.js, knex и objection. Подключается к PostgreSQL.
 
