@@ -37,7 +37,7 @@ module.exports = {
         SERVICE_GRAPHQL_ENDPOINT: 'https://hasura-ds-test.herokuapp.com/v1/graphql',
         SERVICE_AUTH_LOGIN_ENDPOINT: 'http://localhost:4003/login',
         SERVICE_AUTH_SIGNUP_ENDPOINT: 'http://localhost:4003/signup',
-        SERVICE_AUTH_WEBHOOK_ENDPOINT: 'http://localhost:4003/webhook',
+        SERVICE_AUTH_HASURA_WEBHOOK_ENDPOINT: 'http://localhost:4003/webhook/hasura',
       },
       env_production: {
         NODE_ENV: 'production',

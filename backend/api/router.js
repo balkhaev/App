@@ -9,7 +9,7 @@ const router = express.Router();
 const upload = multer({ dest: './upload', storage: multer.memoryStorage() });
 
 const {
-  SERVICE_AUTH_WEBHOOK_ENDPOINT,
+  SERVICE_AUTH_HASURA_WEBHOOK_ENDPOINT,
   SERVICE_AUTH_SIGNUP_ENDPOINT,
   SERVICE_AUTH_LOGIN_ENDPOINT,
   SERVICE_UPLOAD_ENDPOINT,
@@ -52,7 +52,7 @@ router.get('/webhook/auth', async (req, res, next) => {
   const { data } = await axios({
     method: 'GET',
     headers: req.headers,
-    url: SERVICE_AUTH_WEBHOOK_ENDPOINT,
+    url: SERVICE_AUTH_HASURA_WEBHOOK_ENDPOINT,
     data: req.body,
   }).catch(e => {
     if (e.response.code === 401) {
