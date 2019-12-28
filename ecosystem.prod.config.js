@@ -47,7 +47,8 @@ module.exports = {
     {
       name: 'Service Upload',
       cwd: './services/sendi',
-      script: './run.js',
+      script: './bin/run',
+      exec_interpreter: 'node',
       instances: 1,
       autorestart: true,
       max_restarts: 10,
@@ -69,7 +70,7 @@ module.exports = {
     {
       name: 'Service Passport',
       cwd: './services/passport',
-      script: './bin/www',
+      script: './bin/run',
       exec_interpreter: 'node',
       instances: 1,
       autorestart: true,

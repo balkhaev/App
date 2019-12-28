@@ -1,15 +1,23 @@
-cd backend && npm version major
-echo 'Backend version updated!'
+cd backend
+npm version major
+echo '===== Backend major version updated! ====='
 
-cd ../frontend && npm version major
-echo 'Frontend version updated!'
+cd admin
+npm version major
+echo '===== Backend Admin major version updated! ====='
 
-cd ../services/admin && npm version major
-echo 'Admin service version updated!'
+cd ../../frontend
+npm version major
+echo '===== Frontend major version updated! ====='
 
-cd ../passport && npm version major
-echo 'Passport service version updated!'
+cd ../services/passport
+npm version major
+echo '===== Passport service major version updated! ====='
 
-cd ../uploader && npm version major
-[ -f .env ] || cp .env.example .env # copy example .env file if production .env file not exists
-echo 'Uploader service version updated!'
+cd ../uploader
+npm version major
+echo '===== Uploader service major version updated! ====='
+
+cd ../sendi
+npm version major
+echo '===== Sendi service major version updated! ====='

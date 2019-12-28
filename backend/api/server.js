@@ -10,7 +10,7 @@ morgan.token('body', function (req, res) { return JSON.stringify(req.body) });
 app.use(morgan(':method :url :status :response-time ms - :res[content-length] :body - :req[content-length]'));
 app.use(express.json());
 app.use('/api', router);
-app.use((err, req, res, next) => {
+app.use((err, req, res) => {
   if (err) {
     console.error(err.message);
     console.error(err.stack);

@@ -1,10 +1,13 @@
 {
-  "name": "kinovert-service-sendi",
+  "name": "bb-service-sendi",
   "version": "0.0.0",
-  "description": "Kinovert сервис для загрузки файлов в S3",
-  "main": "run.js",
+  "description": "Bratstvo Borsha сервис для загрузки файлов в S3",
+  "main": "bin/run",
+  "bin": {
+    "upload-service-run": "bin/run"
+  },
   "scripts": {
-    "start": "node run"
+    "start": "node bin/run"
   },
   "keywords": [],
   "author": "Mikhail Balkhaev",
