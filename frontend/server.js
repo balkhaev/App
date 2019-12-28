@@ -1,11 +1,12 @@
+const proxyMiddleware = require('http-proxy-middleware');
 const express = require('express');
 const next = require('next');
 
-const dev = process.env.NODE_ENV !== 'production';
-const app = next({ dev });
-const handle = app.getRequestHandler();
-
+const DEV = process.env.NODE_ENV === 'development';
 const PORT = process.env.PORT || 3000;
+
+const app = next({ dev: DEV });
+const handle = app.getRequestHandler();
 
 const devProxy = {
   '/api': {
@@ -18,10 +19,8 @@ const devProxy = {
 app.prepare().then(() => {
   const server = express();
 
-  if (dev && devProxy) {
-    const proxyMiddleware = require('http-proxy-middleware');
-
-    Object.keys(devProxy).forEach(function(context) {
+  if (DEV && devProxy) {
+    Object.keys(devProxy).forEach(context => {
       server.use(proxyMiddleware(context, devProxy[context]));
     });
   }

@@ -27,19 +27,20 @@ describe('Passport endpoints', () => {
       })
       .expect('Content-Type', /json/)
       .expect(400)
-      .then(response => {
-          assert(response.status, false);
-      })
-  });
-  it('Ошибка неправильного ввода данных ', async () => {
-    const res = await request(app)
-      .get('/webhook')
-      .send({
-        email: 'test@mail.com',
-        password: 'test is cool',
+      .then(res => {
+        assert(res.status, false);
       });
-
-    expect(res.statusCode).toEqual(200);
-    expect(res.body).toHaveProperty('X-Hasura-Role');
+  });
+  it('Webhook работает корректно', async () => {
+    return request(app)
+      .get('/webhook/hasura')
+      .set('Authorization', '57bf0509820a52075214b2da8d1ff1c2')
+      .expect('Content-Type', /json/)
+      .expect(200)
+      .then(res => {
+        expect(res).toHaveProperty('X-Hasura-User-Company-Id');
+        expect(res).toHaveProperty('X-Hasura-User-Id');
+        expect(res).toHaveProperty('X-Hasura-Role');
+      });
   });
 });

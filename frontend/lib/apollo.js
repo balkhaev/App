@@ -6,7 +6,7 @@ import { InMemoryCache } from 'apollo-cache-inmemory';
 import { HttpLink } from 'apollo-link-http';
 import fetch from 'isomorphic-unfetch';
 
-const GRAPHQL_ENDPOINT = 'https://hasura-ds-test.herokuapp.com/v1/graphql';
+const GRAPHQL_ENDPOINT = `http://localhost:${process.env.PORT}/api/graphql`;
 
 let apolloClient = null;
 
