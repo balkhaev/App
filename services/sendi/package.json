@@ -1,0 +1,12 @@
+{
+  "name": "kinovert-service-sendi",
+  "version": "0.0.0",
+  "description": "Kinovert сервис для загрузки файлов в S3",
+  "main": "run.js",
+  "scripts": {
+    "start": "node run"
+  },
+  "keywords": [],
+  "author": "Mikhail Balkhaev",
+  "license": "ISC"
+}
