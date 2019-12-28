@@ -4,22 +4,16 @@
   "description": "Kinovert centralizing backend",
   "main": "app/server.js",
   "scripts": {
-    "start": "nodemon app/server"
+    "start": "node app/server"
   },
   "keywords": [],
-  "author": "",
+  "author": "Mikhail Balkhaev",
   "license": "ISC",
   "dependencies": {
-    "@apollo/gateway": "^0.11.5",
-    "apollo-link-context": "^1.0.19",
-    "apollo-link-http": "^1.5.16",
-    "apollo-server-express": "^2.9.14",
     "axios": "^0.19.0",
     "express": "^4.17.1",
-    "express-http-proxy": "^1.6.0",
-    "graphql": "^14.5.8",
-    "http-proxy": "^1.18.0",
-    "node-fetch": "^2.6.0",
-    "nodemon": "^2.0.2"
+    "graphql-request": "^1.8.2",
+    "morgan": "^1.9.1",
+    "multer": "^1.4.2"
   }
 }
