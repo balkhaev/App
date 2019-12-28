@@ -13,6 +13,7 @@ module.exports = {
         PORT: 3000,
         NODE_ENV: 'development',
         BACKEND_ENDPOINT: 'http://localhost:4000/api',
+        GRAPHQL_ENDPOINT: 'http://localhost:4000/api/graphql'
       },
       env_staging: {
         NODE_ENV: 'staging',

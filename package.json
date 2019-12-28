@@ -4,7 +4,7 @@
   "description": "Вертикализированный онлайн кинотеатр",
   "main": "ecosystem.prod.config.js",
   "scripts": {
-    "dev": "pm2 flush && pm2 kill && pm2 start ecosystem.dev.config.js --update-env --env development && pm2 logs",
+    "dev": "pm2 flush && pm2 kill && pm2 start ecosystem.dev.config.js --update-env --env development && pm2 logs --lines 25",
     "prod": "pm2 kill && pm2 start ecosystem.prod.config.js --update-env --env production && pm2 save",
     "start": "npm run dev",
     "install": "./.bin/install.sh",

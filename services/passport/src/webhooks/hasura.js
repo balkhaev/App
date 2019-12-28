@@ -1,4 +1,4 @@
-module.exports = ({ hasuraUa = 'hasura-graphql-engine/v1.0.0', adminRole = 'admin', userRole, anonymousRole } = {}) => {
+module.exports = (passport, { hasuraUa = 'hasura-graphql-engine/v1.0.0', adminRole = 'admin', userRole, anonymousRole } = {}) => {
   if (typeof anonymousRole !== 'string') {
     throw new Error('Anonymous role required!');
   }

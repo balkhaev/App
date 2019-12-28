@@ -12,6 +12,7 @@ const {
   SERVICE_AUTH_HASURA_WEBHOOK_ENDPOINT,
   SERVICE_AUTH_SIGNUP_ENDPOINT,
   SERVICE_AUTH_LOGIN_ENDPOINT,
+  SERVICE_GRAPHQL_ENDPOINT,
   SERVICE_UPLOAD_ENDPOINT,
 } = process.env;
 
@@ -44,7 +45,11 @@ router.post('/login', async (req, res, next) => {
   res.json(data);
 });
 
-router.post('/upload', upload.single('file'), async (req, res) => {
+router.all('/graphql', (req, res) => {
+  req.pipe(request(SERVICE_GRAPHQL_ENDPOINT)).pipe(res);
+})
+
+router.post('/upload', upload.single('file'), (req, res) => {
   req.pipe(request(SERVICE_UPLOAD_ENDPOINT)).pipe(res);
 });
 
@@ -55,7 +60,9 @@ router.get('/webhook/auth', async (req, res, next) => {
     url: SERVICE_AUTH_HASURA_WEBHOOK_ENDPOINT,
     data: req.body,
   }).catch(e => {
-    if (e.response.code === 401) {
+    const { response: { code } = {} } = e;
+
+    if (code === 401) {
       next(new Error('Unauthorized'));
     }
 

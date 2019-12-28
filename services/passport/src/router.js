@@ -87,11 +87,14 @@ router.get('/me', (req, res, next) => {
  *
  * Всем данным Hasura на доверяет 100%... так что не подведи ее.
  */
-router.get('/webhook/hasura', webhooks.hasura({
-  hasuraUa: HASURA_UA,
-  anonymousRole: ANONYMOUS.role,
-  adminRole: ADMIN_ROLE,
-  userRole: USER_ROLE
-}));
+router.get(
+  '/webhook/hasura',
+  webhooks.hasura(passport, {
+    anonymousRole: ANONYMOUS.role,
+    adminRole: ADMIN_ROLE,
+    userRole: USER_ROLE,
+    hasuraUa: HASURA_UA,
+  })
+);
 
 module.exports = router;
