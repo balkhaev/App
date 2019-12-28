@@ -15,7 +15,7 @@ class Role extends Model {
     return 'id';
   }
 
-  getUser() {
+  getRole() {
     return {
       id: this.id,
       name: this.name,

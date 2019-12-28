@@ -2,7 +2,7 @@ require('pg');
 
 module.exports = {
   client: 'pg',
-  connection: 'postgres://localhost/mocha_chai_tv_shows_test',
+  connection: process.env.DATABASE_URL,
   migrations: {
     directory: __dirname + '/db/migrations',
   },

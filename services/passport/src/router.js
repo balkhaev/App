@@ -1,8 +1,10 @@
 const express = require('express');
 
-const passport = require('./passport');
 const User = require('./db/userSchema');
+const passport = require('./passport');
 const { errorHandler } = require('./db/errors');
+
+const { HASURA_UA, ANONYMOUS, ADMIN_ROLE, USER_ROLE } = require('./config.json');
 
 const router = express.Router();
 
@@ -68,30 +70,54 @@ router.post('/signup', async (req, res, next) => {
   })(req, res, next);
 });
 
-const hasuraUA = 'hasura-graphql-engine/v1.0.0';
-
-router.get('/webhook', async (req, res, next) => {
-  if (req.headers['user-agent'] === hasuraUA) {
-    return handleResponse(res, 200, {
-      'X-Hasura-Role': req.headers['x-hasura-role'] || 'admin',
-    });
-  }
-
-  passport.authenticate('bearer', async (err, user, info) => {
+router.get('/me', (req, res, next) => {
+  passport.authenticate('bearer', async (err, user) => {
     if (err) {
       return handleResponse(res, 401, { error: err });
     }
 
     if (user) {
-      const { id, role = 'user' } = await user.getUser();
+      handleResponse(res, 200, await user.getUser());
+    } else {
+      handleResponse(res, 200, ANONYMOUS);
+    }
+  })(req, res, next);
+});
+
+/**
+ * Hasura webhook
+ *
+ * Ожидает код 200 или 401.
+ * При 200 ответе в теле можно передать дополнительные заголовки для схемы привелегий.
+ */
+router.get('/webhook', async (req, res, next) => {
+  const {
+    headers: { userAgent, xHasuraRole = ADMIN_ROLE },
+  } = req;
+
+  if (userAgent === HASURA_UA) {
+    // Hasura admin interface
+    return handleResponse(res, 200, {
+      'X-Hasura-Role': xHasuraRole,
+    });
+  }
+
+  passport.authenticate('bearer', async (err, user) => {
+    if (err) {
+      return handleResponse(res, 401, { error: err });
+    }
+
+    if (user) {
+      const { id, company_id, role = USER_ROLE } = await user.getUser();
 
       handleResponse(res, 200, {
-        'X-Hasura-Role': `${role}`,
+        'X-Hasura-User-Company-Id': `${company_id}`,
         'X-Hasura-User-Id': `${id}`,
+        'X-Hasura-Role': `${role}`,
       });
     } else {
       handleResponse(res, 200, {
-        'X-Hasura-Role': 'anonymous',
+        'X-Hasura-Role': ANONYMOUS.role,
       });
     }
   })(req, res, next);

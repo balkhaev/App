@@ -1,0 +1,10 @@
+{
+  "ADMIN_ROLE": "admin",
+  "USER_ROLE": "user",
+  "ANONYMOUS": {
+    "id": 0,
+    "role": "anonymous",
+    "username": "guest"
+  },
+  "HASURA_UA": "hasura-graphql-engine/v1.0.0"
+}

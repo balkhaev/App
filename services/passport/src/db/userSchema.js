@@ -27,9 +27,10 @@ class User extends Model {
     return {
       id: this.id,
       username: this.username,
-      token: this.token,
       email: this.email,
       role: role.name,
+      company_id: this.company_id,
+      token: this.token,
     };
   }
 
@@ -41,9 +42,11 @@ class User extends Model {
     this.token = await randomBytesAsync(16).then(buf => buf.toString('hex'));
 
     // Setting user role
-    const role = await Role.query().findOne({ name: 'user' });
+    if (!this.role_id) {
+      const role = await Role.query().findOne({ name: 'user' });
 
-    this.role_id = role.id;
+      this.role_id = role.id;
+    }
   }
 
   verifyPassword(password, callback) {
@@ -56,6 +59,7 @@ class User extends Model {
       required: ['username', 'email'],
       properties: {
         id: { type: 'integer' },
+        company_id: { type: 'string' },
         username: { type: 'string', minLength: 1, maxLength: 255 },
         role_id: { type: 'string', minLength: 1, maxLength: 255 },
         token: { type: 'string', minLength: 1, maxLength: 255 },
