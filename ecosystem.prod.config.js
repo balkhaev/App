@@ -7,11 +7,18 @@ module.exports = {
       instances: 1,
       autorestart: true,
       max_restarts: 10,
-      watch: false,
+      watch: ['server'],
       max_memory_restart: '1G',
       env: {
         PORT: 3000,
         NODE_ENV: 'development',
+        BACKEND_ENDPOINT: 'http://localhost:4000/api',
+      },
+      env_staging: {
+        NODE_ENV: 'staging',
+      },
+      env_production: {
+        NODE_ENV: 'production',
       },
     },
     {
@@ -38,8 +45,8 @@ module.exports = {
     },
     {
       name: 'Service Upload',
-      cwd: './services/uploader',
-      script: './src/server.js',
+      cwd: './services/sendi',
+      script: './run.js',
       instances: 1,
       autorestart: true,
       max_restarts: 10,
@@ -48,6 +55,11 @@ module.exports = {
       env: {
         PORT: 4002,
         NODE_ENV: 'development',
+        FILE_CALLBACK_ENDPOINT: 'http://localhost:3000/api/callback/file',
+      },
+      env_staging: {
+        NODE_ENV: 'staging',
+        FILE_CALLBACK_ENDPOINT: 'https://staging.reallco.com/api/callback/file',
       },
       env_production: {
         NODE_ENV: 'production',
