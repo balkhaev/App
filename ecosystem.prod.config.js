@@ -56,7 +56,8 @@ module.exports = {
     {
       name: 'Service Passport',
       cwd: './services/passport',
-      script: './bin/www.js',
+      script: './bin/www',
+      exec_interpreter: 'node',
       instances: 1,
       autorestart: true,
       max_restarts: 10,
