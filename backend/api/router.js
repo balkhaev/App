@@ -1,12 +1,20 @@
+const { Readable } = require('stream');
 const express = require('express');
+const request = require('request');
 const multer = require('multer');
 const axios = require('axios');
+
 const graphql = require('./graphql');
 
+const upload = multer({ dest: './upload', storage: multer.memoryStorage() });
 const router = express.Router();
-const upload = multer({ dest: './upload' });
 
-const { SERVICE_AUTH_WEBHOOK_ENDPOINT, SERVICE_AUTH_SIGNUP_ENDPOINT, SERVICE_AUTH_LOGIN_ENDPOINT, SERVICE_GRAPHQL_ENDPOINT } = process.env;
+const {
+  SERVICE_AUTH_WEBHOOK_ENDPOINT,
+  SERVICE_AUTH_SIGNUP_ENDPOINT,
+  SERVICE_AUTH_LOGIN_ENDPOINT,
+  SERVICE_UPLOAD_ENDPOINT,
+} = process.env;
 
 router.use('/', express.static('./admin/build'));
 
@@ -38,19 +46,37 @@ router.post('/login', async (req, res, next) => {
 });
 
 router.post('/upload', upload.single('file'), async (req, res, next) => {
-  const readable = fs.createReadStream(req.file);
+  req.pipe(request(SERVICE_UPLOAD_ENDPOINT)).pipe(res);
 
-  const { data } = await axios({
-    url: SERVICE_UPLOAD_ENDPOINT,
-    method: 'POST',
-    headers: {
-      'X-PATH': 'testing/folder'
+  /*
+  const upload = new tus.Upload(req.file.buffer, {
+    endpoint: SERVICE_UPLOAD_ENDPOINT,
+    retryDelays: [0, 3000, 5000, 10000, 20000],
+    uploadSize: req.file.size,
+    metadata: {
+      filename: req.file.originalname,
+      filetype: req.file.mimetype,
     },
-    data: readable,
+    onError: function(error) {
+      console.log('Failed because: ' + error);
+    },
+    onProgress: function(bytesUploaded, bytesTotal) {
+      var percentage = ((bytesUploaded / bytesTotal) * 100).toFixed(2);
+
+      console.log(bytesUploaded, bytesTotal, percentage + '%');
+    },
+    onSuccess: function() {
+      console.log('Download %s from %s', upload.file.name, upload.url);
+    },
   });
 
-  res.json(data);
-})
+  upload.start();
+  */
+
+  // res.json({
+  //   status: 'Upload in progress',
+  // });
+});
 
 router.get('/webhook/auth', async (req, res, next) => {
   const { data } = await axios({
@@ -65,8 +91,8 @@ router.get('/webhook/auth', async (req, res, next) => {
   res.json(data);
 });
 
-router.post('/callback/file', async (req, res, next) => {
-  console.log(req.body);
+router.get('/callback/file', async (req, res, next) => {
+  console.log('body', req.body);
 
   const data = await graphql(``);
 

@@ -5,6 +5,7 @@ import Submit from '../components/Submit'
 import VideoList from '../components/VideoList'
 import UserList from '../components/UserList'
 import { withApollo } from '../lib/apollo'
+import FileUploader from '../components/FileUploader/FileUploader'
 
 const IndexPage = props => (
   <App>
@@ -22,6 +23,7 @@ const IndexPage = props => (
       </a>{' '}
       in favour of full Server-Side-Rendering.
     </InfoBox>
+    <FileUploader />
     <Submit />
     <VideoList />
     <UserList />

@@ -22,7 +22,8 @@
     "next": "latest",
     "prop-types": "^15.6.2",
     "react": "^16.7.0",
-    "react-dom": "^16.7.0"
+    "react-dom": "^16.7.0",
+    "tus-js-client": "^1.8.0"
   },
   "license": "ISC",
   "devDependencies": {

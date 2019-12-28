@@ -14,7 +14,6 @@ const app = express();
 
 app.set('host', '0.0.0.0');
 app.set('port', process.env.PORT || 8080);
-app.use(morgan(':method :url :status :response-time ms - :res[content-length] :body - :req[content-length]'));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(passport.initialize());
@@ -22,5 +21,6 @@ app.use(passport.session());
 app.use(expressValidator());
 app.use(cors());
 app.use(router);
+app.use(morgan(':user-agent :method :url :status :response-time ms - :res[content-length] :body - :req[content-length]'));
 
 module.exports = app;
