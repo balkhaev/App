@@ -1,5 +1,4 @@
-const { createServer } = require('http');
-const { parse } = require('url');
+const express = require('express');
 const next = require('next');
 
 const dev = process.env.NODE_ENV !== 'production';
@@ -8,20 +7,32 @@ const handle = app.getRequestHandler();
 
 const PORT = process.env.PORT || 3000;
 
-app.prepare().then(() => {
-  createServer((req, res) => {
-    const parsedUrl = parse(req.url, true);
-    const { pathname, query } = parsedUrl;
+const devProxy = {
+  '/api': {
+    target: process.env.BACKEND_ENDPOINT,
+    pathRewrite: { '^/api': '/' },
+    changeOrigin: true,
+  },
+};
 
-    if (pathname === '/a') {
-      app.render(req, res, '/b', query);
-    } else if (pathname === '/b') {
-      app.render(req, res, '/a', query);
-    } else {
-      handle(req, res, parsedUrl);
+app.prepare().then(() => {
+  const server = express();
+
+  if (dev && devProxy) {
+    const proxyMiddleware = require('http-proxy-middleware');
+
+    Object.keys(devProxy).forEach(function(context) {
+      server.use(proxyMiddleware(context, devProxy[context]));
+    });
+  }
+
+  server.all('*', (req, res) => handle(req, res));
+
+  server.listen(PORT, err => {
+    if (err) {
+      throw err;
     }
-  }).listen(PORT, err => {
-    if (err) throw err;
-    console.log('> Ready on http://localhost:' + PORT);
+
+    console.log(`> Ready on http://localhost:${PORT} [${process.env.NODE_ENV}]`);
   });
 });
