@@ -14,10 +14,6 @@ cd ../services/passport
 npm version minor
 echo '===== Passport service minor version updated! ====='
 
-cd ../uploader
-npm version minor
-echo '===== Uploader service minor version updated! ====='
-
 cd ../sendi
 npm version minor
 echo '===== Sendi service minor version updated! ====='

@@ -19,11 +19,6 @@ npm i
 [ -f .env ] || cp .env.example .env # copy example .env file if production .env not exists
 echo '===== Passport service installed! ====='
 
-cd ../uploader
-npm i
-[ -f .env ] || cp .env.example .env
-echo '===== Uploader service installed! ====='
-
 cd ../sendi
 npm i
 [ -f .env ] || cp .env.example .env

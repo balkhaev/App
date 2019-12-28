@@ -14,10 +14,6 @@ cd ../services/passport
 npm version major
 echo '===== Passport service major version updated! ====='
 
-cd ../uploader
-npm version major
-echo '===== Uploader service major version updated! ====='
-
 cd ../sendi
 npm version major
 echo '===== Sendi service major version updated! ====='
