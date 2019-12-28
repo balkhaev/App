@@ -8,7 +8,7 @@ const router = express.Router();
 
 const handleResponse = (res, code, statusMsg) => {
   res.status(code).json(statusMsg);
-}
+};
 
 router.post('/login', async (req, res, next) => {
   req.assert('email', 'Email cannot be blank').notEmpty();
@@ -71,30 +71,30 @@ router.post('/signup', async (req, res, next) => {
 const hasuraUA = 'hasura-graphql-engine/v1.0.0';
 
 router.get('/webhook', async (req, res, next) => {
-  if (req.headers['user-agent'] === hasuraUA && req.headers['x-hasura-role']) {
-    handleResponse(res, 200, {
+  if (req.headers['user-agent'] === hasuraUA) {
+    return handleResponse(res, 200, {
       'X-Hasura-Role': req.headers['x-hasura-role'] || 'admin',
     });
-  } else {
-    passport.authenticate('bearer', async (err, user, info) => {
-      if (err) {
-        return handleResponse(res, 401, { error: err });
-      }
-
-      if (user) {
-        const { id, role = 'user' } = await user.getUser();
-
-        handleResponse(res, 200, {
-          'X-Hasura-Role': `${role}`,
-          'X-Hasura-User-Id': `${id}`,
-        });
-      } else {
-        handleResponse(res, 200, {
-          'X-Hasura-Role': 'anonymous'
-        });
-      }
-    })(req, res, next);
   }
+
+  passport.authenticate('bearer', async (err, user, info) => {
+    if (err) {
+      return handleResponse(res, 401, { error: err });
+    }
+
+    if (user) {
+      const { id, role = 'user' } = await user.getUser();
+
+      handleResponse(res, 200, {
+        'X-Hasura-Role': `${role}`,
+        'X-Hasura-User-Id': `${id}`,
+      });
+    } else {
+      handleResponse(res, 200, {
+        'X-Hasura-Role': 'anonymous',
+      });
+    }
+  })(req, res, next);
 });
 
 module.exports = router;
