@@ -1,4 +1,3 @@
-const { Readable } = require('stream');
 const express = require('express');
 const request = require('request');
 const multer = require('multer');
@@ -6,8 +5,8 @@ const axios = require('axios');
 
 const graphql = require('./graphql');
 
-const upload = multer({ dest: './upload', storage: multer.memoryStorage() });
 const router = express.Router();
+const upload = multer({ dest: './upload', storage: multer.memoryStorage() });
 
 const {
   SERVICE_AUTH_WEBHOOK_ENDPOINT,
@@ -27,7 +26,7 @@ router.post('/signup', async (req, res, next) => {
   }).catch(e => {
     next(e);
   });
-  // Тут будут кастомные обработчики ошибок от сервиса и генерирование своих человеко-читаемых.
+  // Тут будут кастомные обработчики ошибок от сервиса c генерировацией человеку-понятных новых.
 
   res.json(data);
 });
@@ -45,37 +44,8 @@ router.post('/login', async (req, res, next) => {
   res.json(data);
 });
 
-router.post('/upload', upload.single('file'), async (req, res, next) => {
+router.post('/upload', upload.single('file'), async (req, res) => {
   req.pipe(request(SERVICE_UPLOAD_ENDPOINT)).pipe(res);
-
-  /*
-  const upload = new tus.Upload(req.file.buffer, {
-    endpoint: SERVICE_UPLOAD_ENDPOINT,
-    retryDelays: [0, 3000, 5000, 10000, 20000],
-    uploadSize: req.file.size,
-    metadata: {
-      filename: req.file.originalname,
-      filetype: req.file.mimetype,
-    },
-    onError: function(error) {
-      console.log('Failed because: ' + error);
-    },
-    onProgress: function(bytesUploaded, bytesTotal) {
-      var percentage = ((bytesUploaded / bytesTotal) * 100).toFixed(2);
-
-      console.log(bytesUploaded, bytesTotal, percentage + '%');
-    },
-    onSuccess: function() {
-      console.log('Download %s from %s', upload.file.name, upload.url);
-    },
-  });
-
-  upload.start();
-  */
-
-  // res.json({
-  //   status: 'Upload in progress',
-  // });
 });
 
 router.get('/webhook/auth', async (req, res, next) => {
@@ -85,18 +55,26 @@ router.get('/webhook/auth', async (req, res, next) => {
     url: SERVICE_AUTH_WEBHOOK_ENDPOINT,
     data: req.body,
   }).catch(e => {
+    if (e.response.code === 401) {
+      next(new Error('Unauthorized'));
+    }
+
     next(e);
   });
 
   res.json(data);
 });
 
-router.get('/callback/file', async (req, res, next) => {
+router.get('/callback/file', async (req, res) => {
   console.log('body', req.body);
 
-  const data = await graphql(``);
+  const data = await graphql.request(``);
 
   res.json(data);
+});
+
+router.post('/callback/file', async (req, res) => {
+  res.status(200).send();
 });
 
 module.exports = router;
