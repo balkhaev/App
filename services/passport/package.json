@@ -1,7 +1,7 @@
 {
-  "name": "kinovert-service-passport",
+  "name": "bb-auth-service",
   "version": "0.0.3",
-  "description": "Kinovert auth service on passport.js with webhook endpoint",
+  "description": "Bratstvo Borsha presents - auth service on passport.js with webhook endpoint",
   "main": "src/server.js",
   "bin": {
     "auth-service-www": "bin/www"

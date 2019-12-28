@@ -1,4 +1,3 @@
-const { promisify } = require('util');
 const { Model } = require('objection');
 const bcrypt = require('bcrypt');
 const crypto = require('crypto');
@@ -7,10 +6,7 @@ const Knex = require('knex');
 const connection = require('../../knexfile');
 const Role = require('./roleSchema');
 
-const knexConnection = Knex(connection);
-const randomBytesAsync = promisify(crypto.randomBytes);
-
-Model.knex(knexConnection);
+Model.knex(Knex(connection));
 
 class User extends Model {
   static get tableName() {
@@ -35,13 +31,13 @@ class User extends Model {
   }
 
   async $beforeInsert() {
-    // Crypt password
+    // = Crypt password
     const salt = bcrypt.genSaltSync();
 
     this.password = await bcrypt.hash(this.password, salt);
-    this.token = await randomBytesAsync(16).then(buf => buf.toString('hex'));
+    this.token = crypto.randomBytes(16).toString('hex');
 
-    // Setting user role
+    // = Set user role
     if (!this.role_id) {
       const role = await Role.query().findOne({ name: 'user' });
 
@@ -56,7 +52,7 @@ class User extends Model {
   static get jsonSchema() {
     return {
       type: 'object',
-      required: ['username', 'email'],
+      required: ['email'],
       properties: {
         id: { type: 'integer' },
         company_id: { type: 'string' },

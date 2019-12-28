@@ -1,10 +1,9 @@
-const Knex = require('knex');
-const connection = require('../../knexfile');
 const { Model } = require('objection');
+const Knex = require('knex');
 
-const knexConnection = Knex(connection);
+const connection = require('../../knexfile');
 
-Model.knex(knexConnection);
+Model.knex(Knex(connection));
 
 class Role extends Model {
   static get tableName() {

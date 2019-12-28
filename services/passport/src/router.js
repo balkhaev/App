@@ -1,19 +1,14 @@
 const express = require('express');
 
+const { HASURA_UA, ANONYMOUS, ADMIN_ROLE, USER_ROLE } = require('./config.json');
+const { errorHandler } = require('./db/errors');
 const User = require('./db/userSchema');
 const passport = require('./passport');
-const { errorHandler } = require('./db/errors');
-
-const { HASURA_UA, ANONYMOUS, ADMIN_ROLE, USER_ROLE } = require('./config.json');
+const webhooks = require('./webhooks');
 
 const router = express.Router();
 
-const handleResponse = (res, code, statusMsg) => {
-  res.status(code).json(statusMsg);
-};
-
 router.post('/login', async (req, res, next) => {
-  req.assert('email', 'Email cannot be blank').notEmpty();
   req.assert('email', 'Email is not valid').isEmail();
   req.assert('password', 'Password cannot be blank').notEmpty();
 
@@ -25,11 +20,11 @@ router.post('/login', async (req, res, next) => {
 
   passport.authenticate('local', async (err, user, info) => {
     if (err) {
-      return handleResponse(res, 400, { error: err });
+      return res.status(400).json({ error: err });
     }
 
     if (user) {
-      handleResponse(res, 200, await user.getUser());
+      res.json(await user.getUser());
     }
   })(req, res, next);
 });
@@ -37,7 +32,7 @@ router.post('/login', async (req, res, next) => {
 router.post('/signup', async (req, res, next) => {
   req.assert('email', 'Email is not valid').isEmail();
   req.assert('username', 'Username is not valid').notEmpty();
-  req.assert('password', 'Password must be at least 4 characters long').len(4);
+  req.assert('password', 'Password must be at least 4 characters long').len(8);
   req.assert('confirmPassword', 'Passwords do not match').equals(req.body.password);
 
   const errors = req.validationErrors();
@@ -59,13 +54,13 @@ router.post('/signup', async (req, res, next) => {
     return;
   }
 
-  passport.authenticate('local', async (err, user, info) => {
+  passport.authenticate('local', async (err, user) => {
     if (err) {
-      return handleResponse(res, 400, { error: err });
+      return res.status(400).json({ error: err });
     }
 
     if (user) {
-      handleResponse(res, 200, await user.getUser());
+      res.json(await user.getUser());
     }
   })(req, res, next);
 });
@@ -73,54 +68,30 @@ router.post('/signup', async (req, res, next) => {
 router.get('/me', (req, res, next) => {
   passport.authenticate('bearer', async (err, user) => {
     if (err) {
-      return handleResponse(res, 401, { error: err });
+      return res.status(401).json({ error: err });
     }
 
     if (user) {
-      handleResponse(res, 200, await user.getUser());
+      res.json(await user.getUser());
     } else {
-      handleResponse(res, 200, ANONYMOUS);
+      res.json(ANONYMOUS);
     }
   })(req, res, next);
 });
 
 /**
- * Hasura webhook
+ * Hasura webhook.
  *
- * Ожидает код 200 или 401.
- * При 200 ответе в теле можно передать дополнительные заголовки для схемы привелегий.
+ * Ожидает статус код 200 или 401 и заголовок "X-Hasura-Role" с ролью пользователя.
+ * При 200 ответе можно в теле JSON'ом передать дополнительные заголовки для схемы привелегий.
+ *
+ * Всем данным Hasura на доверяет 100%... так что не подведи ее.
  */
-router.get('/webhook', async (req, res, next) => {
-  const {
-    headers: { userAgent, xHasuraRole = ADMIN_ROLE },
-  } = req;
-
-  if (userAgent === HASURA_UA) {
-    // Hasura admin interface
-    return handleResponse(res, 200, {
-      'X-Hasura-Role': xHasuraRole,
-    });
-  }
-
-  passport.authenticate('bearer', async (err, user) => {
-    if (err) {
-      return handleResponse(res, 401, { error: err });
-    }
-
-    if (user) {
-      const { id, company_id, role = USER_ROLE } = await user.getUser();
-
-      handleResponse(res, 200, {
-        'X-Hasura-User-Company-Id': `${company_id}`,
-        'X-Hasura-User-Id': `${id}`,
-        'X-Hasura-Role': `${role}`,
-      });
-    } else {
-      handleResponse(res, 200, {
-        'X-Hasura-Role': ANONYMOUS.role,
-      });
-    }
-  })(req, res, next);
-});
+router.get('/webhook/hasura', webhooks.hasura({
+  hasuraUa: HASURA_UA,
+  anonymousRole: ANONYMOUS.role,
+  adminRole: ADMIN_ROLE,
+  userRole: USER_ROLE
+}));
 
 module.exports = router;
