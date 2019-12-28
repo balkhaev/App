@@ -15,14 +15,13 @@ build project:
     refs:
       - master
 
-deploy to frontend:
+deploy to staging:
   stage: deploy
   script:
     - mkdir -p ~/.ssh && chmod 700 ~/.ssh
     - eval $(ssh-agent -s)
     - echo "$STAGING_PRIVATE_KEY" | tr -d '\r' | ssh-add - > /dev/null
     - echo "$STAGING_SERVER_HOSTKEYS" > ~/.ssh/known_hosts && chmod 644 ~/.ssh/known_hosts
-    - echo 'Deploy to staging...'
     - npm i
     - npm run deploy-staging
   only:
