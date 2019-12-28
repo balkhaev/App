@@ -79,7 +79,8 @@ module.exports = {
       ref: 'origin/master',
       repo: ' git@lab.datascreen.ru:balkhaev/kinovert.git',
       path: '/home/node/kinovert',
-      'post-deploy': './.bin/install.sh && npm run prod && pm2 save',
+      'post-deploy': './.bin/install.sh && git checkout -- . && npm run prod && pm2 save',
+      // Зачем "git checkout -- ."? А затем что на винде билдятся одни package-lock'и, а на стейдже другие. Хахаха, пошел я нахуй.
     },
   },
 };
