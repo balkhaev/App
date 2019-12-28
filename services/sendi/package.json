@@ -8,5 +8,8 @@
   },
   "keywords": [],
   "author": "Mikhail Balkhaev",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^8.2.0"
+  }
 }
