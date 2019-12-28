@@ -1,0 +1,10 @@
+#!/usr/bin/env node
+const chalk = require('chalk');
+const authService = require('../src/express');
+
+const PORT = process.env.PORT || 3000;
+
+authService.listen(PORT, () => {
+  console.log('%s App is running at http://localhost:%d in %s mode', chalk.green('✓'), app.get('port'), app.get('env'));
+  console.log('  Press CTRL-C to stop\n');
+});

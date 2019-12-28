@@ -1,4 +1,6 @@
 const request = require('supertest');
+const assert = require('assert');
+
 const app = require('./server');
 
 describe('Passport endpoints', () => {
@@ -13,18 +15,21 @@ describe('Passport endpoints', () => {
     expect(res.statusCode).toEqual(400);
     expect(res.body).toHaveProperty('error');
   });
-  it('Ошибка неправильного ввода данных при регистрации', async () => {
-    const res = await request(app)
-      .post('/signup')
+
+  it('Ошибка неправильного ввода данных при регистрации', () => {
+    return request(app)
+      .get('/signup')
       .send({
         email: 'test@mailcom',
         username: 'test',
         password: 'test is cool',
         confirmPassword: 'test is cool',
-      });
-
-    expect(res.statusCode).toEqual(400);
-    expect(res.body).toHaveProperty('errors');
+      })
+      .expect('Content-Type', /json/)
+      .expect(400)
+      .then(response => {
+          assert(response.status, false);
+      })
   });
   it('Ошибка неправильного ввода данных ', async () => {
     const res = await request(app)

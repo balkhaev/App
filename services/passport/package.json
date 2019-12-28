@@ -1,8 +1,11 @@
 {
   "name": "kinovert-service-passport",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Kinovert auth service on passport.js with webhook endpoint",
   "main": "src/server.js",
+  "bin": {
+    "auth-service-www": "bin/www"
+  },
   "scripts": {
     "start": "node src/server.js",
     "migrate": "knex migrate:latest",
