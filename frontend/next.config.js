@@ -1,12 +1,9 @@
-const webpack = require('webpack');
-const dotenv = require('dotenv');
-
-dotenv.config();
+const {
+  GRAPHQL_ENDPOINT = 'https://staging.reallco.com/api/graphql',
+} = process.env;
 
 module.exports = {
-  webpack(config) {
-    config.plugins.push(new webpack.EnvironmentPlugin(process.env));
-
-    return config;
+  env: {
+    GRAPHQL_ENDPOINT,
   },
 };
