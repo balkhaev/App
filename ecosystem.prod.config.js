@@ -19,7 +19,6 @@ module.exports = {
       },
       env_staging: {
         NODE_ENV: 'staging',
-        GRAPHQL_ENDPOINT: 'https://staging.reallco.com/api/graphql',
       },
       env_production: {
         NODE_ENV: 'production',

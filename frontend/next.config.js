@@ -1,9 +1,9 @@
 const webpack = require('webpack');
+const dotenv = require('dotenv');
+
+dotenv.config();
 
 module.exports = {
-  env: {
-    GRAPHQL_ENDPOINT: process.env.GRAPHQL_ENDPOINT,
-  },
   webpack(config) {
     config.plugins.push(new webpack.EnvironmentPlugin(process.env));
 

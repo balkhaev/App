@@ -52,7 +52,6 @@ router.post('/graphql', async (req, res, next) => {
       data: req.body,
     })
     .catch(e => {
-      console.log(e);
       next(e);
     });
 
