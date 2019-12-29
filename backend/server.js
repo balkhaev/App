@@ -18,6 +18,8 @@ app.use((req, res, next) => {
       authorization: req.headers.authorization || '',
     },
   });
+
+  next();
 });
 app.use('/api', router);
 app.use((err, req, res, next) => {
@@ -25,11 +27,9 @@ app.use((err, req, res, next) => {
     console.error(err.message);
     console.error(err.stack);
 
-    const { response: { status = 500, data: { errors, message } = {} } = {} } = err;
-
-    return res.status(status).json({
+    return res.status(501).json({
       status: false,
-      errors: errors || [message] || [err.message],
+      error: err.message,
     });
   }
 });

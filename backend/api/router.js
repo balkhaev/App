@@ -1,6 +1,5 @@
 const express = require('express');
 const proxy = require('http-proxy-middleware');
-const axios = require('axios');
 
 const graphql = require('./graphql');
 
@@ -17,11 +16,10 @@ const {
 router.use('/', express.static('./admin/build'));
 
 router.post('/signup', async (req, res, next) => {
-  const { data } = await axios({
+  const { data } = await req.axios({
     url: SERVICE_AUTH_SIGNUP_ENDPOINT,
-    method: 'POST',
-    headers: req.headers,
     data: req.body,
+    method: 'POST',
   }).catch(e => {
     next(e);
   });
@@ -31,11 +29,10 @@ router.post('/signup', async (req, res, next) => {
 });
 
 router.post('/login', async (req, res, next) => {
-  const { data } = await axios({
+  const { data } = await req.axios.request({
     url: SERVICE_AUTH_LOGIN_ENDPOINT,
-    method: 'POST',
-    headers: req.headers,
     data: req.body,
+    method: 'POST',
   }).catch(e => {
     next(e);
   });
@@ -59,11 +56,11 @@ router.post('/graphql', async (req, res, next) => {
 router.use(
   '/upload',
   proxy({
-    toProxy: SERVICE_UPLOAD_ENDPOINT,
     target: SERVICE_UPLOAD_ENDPOINT,
     followRedirects: true,
     changeOrigin: true,
     ignorePath: true,
+    toProxy: true,
   })
 );
 
