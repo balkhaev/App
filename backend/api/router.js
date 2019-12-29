@@ -1,12 +1,10 @@
 const express = require('express');
-const request = require('request');
-const multer = require('multer');
+const proxy = require('http-proxy-middleware');
 const axios = require('axios');
 
 const graphql = require('./graphql');
 
 const router = express.Router();
-const upload = multer({ dest: './upload', storage: multer.memoryStorage() });
 
 const {
   SERVICE_AUTH_HASURA_WEBHOOK_ENDPOINT,
@@ -45,19 +43,34 @@ router.post('/login', async (req, res, next) => {
   res.json(data);
 });
 
-router.all('/graphql', (req, res) => {
-  req.pipe(request(SERVICE_GRAPHQL_ENDPOINT)).pipe(res);
-})
+router.post('/graphql', async (req, res, next) => {
+  const { data } = await req.axios({
+    url: SERVICE_GRAPHQL_ENDPOINT,
+    method: 'POST',
+    data: req.body,
+  }).catch(e => {
+    console.log(e);
+    next(e);
+  });
 
-router.post('/upload', upload.single('file'), (req, res) => {
-  req.pipe(request(SERVICE_UPLOAD_ENDPOINT)).pipe(res);
+  res.json(data);
 });
 
-router.get('/webhook/auth', async (req, res, next) => {
-  const { data } = await axios({
-    method: 'GET',
-    headers: req.headers,
+router.use(
+  '/upload',
+  proxy({
+    toProxy: SERVICE_UPLOAD_ENDPOINT,
+    target: SERVICE_UPLOAD_ENDPOINT,
+    followRedirects: true,
+    changeOrigin: true,
+    ignorePath: true,
+  })
+);
+
+router.get('/webhook/hasura', async (req, res, next) => {
+  const { data } = await req.axios({
     url: SERVICE_AUTH_HASURA_WEBHOOK_ENDPOINT,
+    method: 'GET',
     data: req.body,
   }).catch(e => {
     const { response: { code } = {} } = e;
@@ -72,15 +85,24 @@ router.get('/webhook/auth', async (req, res, next) => {
   res.json(data);
 });
 
-router.get('/callback/file', async (req, res) => {
+router.get('/callback/tusd', async (req, res) => {
   console.log('body', req.body);
 
   const data = await graphql.request(``);
 
-  res.json(data);
+  res.json({ data });
 });
 
-router.post('/callback/file', async (req, res) => {
+router.post('/callback/tusd', async (req, res) => {
+  const { Upload, HTTPRequest } = req.body;
+
+  console.log({ Upload, HTTPRequest });
+
+  if (!Upload) {
+    res.status(500).json({ status: false });
+    return;
+  }
+
   res.status(200).send();
 });
 

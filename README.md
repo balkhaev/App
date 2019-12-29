@@ -25,7 +25,7 @@
 - `install.sh` для установки всего приложений как монолита.
 - `bumpMinor.sh` обновление всех состовляющих приложений до минорной версии. По идее должен запустится всего 1 раз, когда выкатим MVP в прод.
 - `bumpMajor.sh` обновление всех состовляющих приложений до мажорной версии. Запуск кинотеатра, надо будет много чего в скрипте накрутить.
-- `cleanEnvFiles.sh` удаление продакшн `.env` файлов и подстановка примеров вместо них.
+- `cleanInstall.sh` удаление продакшн `.env` файлов и запуск `install.sh`.
 
 ### Envs
 
@@ -44,9 +44,9 @@
 - POST **/api/graphql** - проксирует запрос в Hasura
 - POST **/api/login** - проксирует запрос в Passport Service
 - POST **/api/signup** - проксирует запрос в Passport Service
-- GET **/api/webhook/auth** - проксирует запрос в Passport Service
+- GET **/api/webhook/hasura** - проксирует запрос в Passport Service
 - POST **/api/upload** - проксирует запрос в Sendi Service
-- GET/POST **/api/callback/file** - принимает обратный вызов от Sendi Service
+- GET/POST **/api/callback/tusd** - принимает обратный вызов от Sendi Service
 
 ### Admin
 

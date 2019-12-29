@@ -12,7 +12,7 @@ const devProxy = {
   '/api': {
     target: process.env.BACKEND_ENDPOINT,
     pathRewrite: { '^/api': '/' },
-    changeOrigin: true,
+    changeOrigin: false,
   },
 };
 

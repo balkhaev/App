@@ -12,6 +12,9 @@ const FileUploader = () => {
         filename: file.name,
         filetype: file.type,
       },
+      headers: {
+        Authorization: localStorage.getItem('token'),
+      },
       onError: function(error) {
         console.log('Failed because: ' + error);
       },
