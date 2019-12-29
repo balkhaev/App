@@ -62,7 +62,6 @@ router.use(
   '/upload',
   proxy({
     target: SERVICE_UPLOAD_ENDPOINT,
-    secure: false,
     pathRewrite: {
       '/api/upload': '/files',
     },
