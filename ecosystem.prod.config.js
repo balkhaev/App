@@ -12,11 +12,13 @@ module.exports = {
       env: {
         PORT: 3000,
         NODE_ENV: 'development',
+        // Backend proxy in frontend/server.js for dev env
         BACKEND_ENDPOINT: 'http://localhost:4000/api',
-        GRAPHQL_ENDPOINT: 'http://localhost:4000/api/graphql'
+        GRAPHQL_ENDPOINT: 'http://localhost:4000/api/graphql',
       },
       env_staging: {
         NODE_ENV: 'staging',
+        GRAPHQL_ENDPOINT: 'https://staging.reallco.com/api/graphql',
       },
       env_production: {
         NODE_ENV: 'production',
@@ -25,7 +27,7 @@ module.exports = {
     {
       name: 'App Backend',
       cwd: './backend',
-      script: './api/server.js',
+      script: './server.js',
       instances: 1,
       autorestart: true,
       max_restarts: 5,
@@ -47,21 +49,20 @@ module.exports = {
     {
       name: 'Service Upload',
       cwd: './services/sendi',
-      script: './bin/run',
-      exec_interpreter: 'node',
+      script: './bin/run.sh',
       instances: 1,
       autorestart: true,
       max_restarts: 10,
       watch: true,
       max_memory_restart: '1G',
       env: {
-        PORT: 4002,
+        PORT: 1080,
+        HOST: 'localhost',
         NODE_ENV: 'development',
-        FILE_CALLBACK_ENDPOINT: 'http://localhost:3000/api/callback/file',
+        HOOKS_HTTP: 'http://localhost:4000/api/callback/tusd',
       },
       env_staging: {
         NODE_ENV: 'staging',
-        FILE_CALLBACK_ENDPOINT: 'https://staging.reallco.com/api/callback/file',
       },
       env_production: {
         NODE_ENV: 'production',

@@ -1,16 +1,26 @@
+const morganBody = require('morgan-body');
 const express = require('express');
-const morgan = require('morgan');
-const router = require('./router');
+const axios = require('axios');
+
+const router = require('./api/router');
 
 const app = express();
 const PORT = process.env.PORT || 4000;
 
-morgan.token('body', function (req, res) { return JSON.stringify(req.body) });
-
-app.use(morgan(':method :url :status :response-time ms - :res[content-length] :body - :req[content-length]'));
+app.disable('x-powered-by');
 app.use(express.json());
+morganBody(app);
+
+app.use((req, res, next) => {
+  req.axios = axios.create({
+    timeout: 1000,
+    headers: {
+      authorization: req.headers.authorization || '',
+    },
+  });
+});
 app.use('/api', router);
-app.use((err, req, res) => {
+app.use((err, req, res, next) => {
   if (err) {
     console.error(err.message);
     console.error(err.stack);
@@ -25,5 +35,5 @@ app.use((err, req, res) => {
 });
 
 app.listen(PORT, () => {
-  console.log(`App at:\nhttp://localhost:${PORT} - Web site`);
+  console.log(`App at:\nhttp://localhost:${PORT} [${process.env.NODE_ENV}]`);
 });
