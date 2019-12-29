@@ -68,10 +68,15 @@ router.use(
     },
     onProxyRes: proxyRes => {
       if (proxyRes.statusCode === 201 && proxyRes.headers.location) {
-        proxyRes.headers.location = proxyRes.headers.location.replace(
-          '/files',
-          '/api/upload'
-        );
+        let { location } = proxyRes.headers;
+
+        location = location.replace('/files', '/api/upload');
+
+        if (process.env.NODE_ENV !== 'development') {
+          location = location.replace('http://', 'https://')
+        }
+
+        proxyRes.headers.location = location;
       }
     },
   })
