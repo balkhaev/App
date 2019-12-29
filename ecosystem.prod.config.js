@@ -7,7 +7,7 @@ module.exports = {
       instances: 1,
       autorestart: true,
       max_restarts: 10,
-      watch: ['server'],
+      watch: ['server.js'],
       max_memory_restart: '1G',
       env: {
         PORT: 3000,
@@ -37,7 +37,7 @@ module.exports = {
       env: {
         PORT: 4000,
         NODE_ENV: 'development',
-        SERVICE_UPLOAD_ENDPOINT: 'http://localhost:1080/files/',
+        SERVICE_UPLOAD_ENDPOINT: 'http://localhost:1080',
         SERVICE_GRAPHQL_ENDPOINT: 'https://hasura-ds-test.herokuapp.com/v1/graphql',
         SERVICE_AUTH_LOGIN_ENDPOINT: 'http://localhost:4003/login',
         SERVICE_AUTH_SIGNUP_ENDPOINT: 'http://localhost:4003/signup',

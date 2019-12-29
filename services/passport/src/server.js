@@ -1,3 +1,5 @@
+require('elastic-apm-node').start();
+
 const expressValidator = require('express-validator');
 const bodyParser = require('body-parser');
 const passport = require('passport');
@@ -16,7 +18,7 @@ app.set('host', '0.0.0.0');
 app.set('port', process.env.PORT || 8080);
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
-app.use(morgan(':user-agent :method :url :status :response-time ms - :res[content-length] :body - :req[content-length]'));
+app.use(morgan('[:user-agent] :method :url - code :status (:response-time ms) - :body'));
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(expressValidator());

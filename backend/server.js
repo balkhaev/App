@@ -1,4 +1,5 @@
-const morganBody = require('morgan-body');
+require('elastic-apm-node').start();
+
 const express = require('express');
 const axios = require('axios');
 
@@ -9,11 +10,10 @@ const PORT = process.env.PORT || 4000;
 
 app.disable('x-powered-by');
 app.use(express.json());
-morganBody(app);
 
 app.use((req, res, next) => {
   req.axios = axios.create({
-    timeout: 1000,
+    timeout: 10000,
     headers: {
       authorization: req.headers.authorization || '',
     },

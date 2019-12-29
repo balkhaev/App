@@ -10,6 +10,7 @@ elif [[ "$OSTYPE" == "msys" ]]; then
   TUSD_BINARY=./bin/tusd.exe
 fi
 
-export $(egrep -v '^#' .env | xargs)
+eval $(cat .env | sed 's/^/export /')
 
-$TUSD_BINARY -behind-proxy -host=$HOST -port=$PORT -s3-bucket=$S3_BUCKET -s3-endpoint=$S3_ENDPOINT -s3-object-prefix=$S3_OBJECT_PREFIX -hooks-http $HOOKS_HTTP
+$TUSD_BINARY -behind-proxy -s3-bucket=$TUSD_S3_BUCKET -s3-endpoint=$TUSD_S3_ENDPOINT -s3-object-prefix=$TUSD_S3_OBJECT_PREFIX -hooks-http $HOOKS_HTTP
+

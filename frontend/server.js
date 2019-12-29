@@ -1,3 +1,5 @@
+require('elastic-apm-node').start();
+
 const proxyMiddleware = require('http-proxy-middleware');
 const express = require('express');
 const next = require('next');
@@ -12,7 +14,8 @@ const devProxy = {
   '/api': {
     target: process.env.BACKEND_ENDPOINT,
     pathRewrite: { '^/api': '/' },
-    changeOrigin: false,
+    changeOrigin: true,
+    autoRewrite: true,
   },
 };
 

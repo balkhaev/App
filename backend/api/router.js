@@ -16,39 +16,45 @@ const {
 router.use('/', express.static('./admin/build'));
 
 router.post('/signup', async (req, res, next) => {
-  const { data } = await req.axios({
-    url: SERVICE_AUTH_SIGNUP_ENDPOINT,
-    data: req.body,
-    method: 'POST',
-  }).catch(e => {
-    next(e);
-  });
+  const { data } = await req
+    .axios({
+      url: SERVICE_AUTH_SIGNUP_ENDPOINT,
+      data: req.body,
+      method: 'POST',
+    })
+    .catch(e => {
+      next(e);
+    });
   // Тут будут кастомные обработчики ошибок от сервиса c генерировацией человеку-понятных новых.
 
   res.json(data);
 });
 
 router.post('/login', async (req, res, next) => {
-  const { data } = await req.axios.request({
-    url: SERVICE_AUTH_LOGIN_ENDPOINT,
-    data: req.body,
-    method: 'POST',
-  }).catch(e => {
-    next(e);
-  });
+  const { data } = await req.axios
+    .request({
+      url: SERVICE_AUTH_LOGIN_ENDPOINT,
+      data: req.body,
+      method: 'POST',
+    })
+    .catch(e => {
+      next(e);
+    });
 
   res.json(data);
 });
 
 router.post('/graphql', async (req, res, next) => {
-  const { data } = await req.axios({
-    url: SERVICE_GRAPHQL_ENDPOINT,
-    method: 'POST',
-    data: req.body,
-  }).catch(e => {
-    console.log(e);
-    next(e);
-  });
+  const { data } = await req
+    .axios({
+      url: SERVICE_GRAPHQL_ENDPOINT,
+      method: 'POST',
+      data: req.body,
+    })
+    .catch(e => {
+      console.log(e);
+      next(e);
+    });
 
   res.json(data);
 });
@@ -57,10 +63,18 @@ router.use(
   '/upload',
   proxy({
     target: SERVICE_UPLOAD_ENDPOINT,
-    followRedirects: true,
-    changeOrigin: true,
-    ignorePath: true,
-    toProxy: true,
+    secure: false,
+    pathRewrite: {
+      '/api/upload': '/files',
+    },
+    onProxyRes: proxyRes => {
+      if (proxyRes.statusCode === 201 && proxyRes.headers.location) {
+        proxyRes.headers.location = proxyRes.headers.location.replace(
+          '/files',
+          '/api/upload'
+        );
+      }
+    },
   })
 );
 
@@ -71,19 +85,22 @@ router.use(
  * чтобы абстрагировать сервис авторизации от Hasura.
  */
 router.get('/webhook/hasura', async (req, res, next) => {
-  const { data } = await req.axios({
-    url: SERVICE_AUTH_HASURA_WEBHOOK_ENDPOINT,
-    method: 'GET',
-    data: req.body,
-  }).catch(e => {
-    const { response: { code } = {} } = e;
+  const { data } = await req
+    .axios({
+      url: SERVICE_AUTH_HASURA_WEBHOOK_ENDPOINT,
+      method: 'GET',
+      data: req.body,
+      headers: req.headers,
+    })
+    .catch(e => {
+      const { response: { code } = {} } = e;
 
-    if (code === 401) {
-      next(new Error('Unauthorized'));
-    }
+      if (code === 401) {
+        next(new Error('Unauthorized'));
+      }
 
-    next(e);
-  });
+      next(e);
+    });
 
   res.json(data);
 });
@@ -91,7 +108,7 @@ router.get('/webhook/hasura', async (req, res, next) => {
 router.get('/callback/tusd', async (req, res) => {
   const { Upload, HTTPRequest } = req.body;
 
-  console.log({ Upload, HTTPRequest, t: 2 });
+  // console.log({ Upload, HTTPRequest, t: 2 });
 
   // const data = await graphql.request(``);
 
@@ -101,7 +118,7 @@ router.get('/callback/tusd', async (req, res) => {
 router.post('/callback/tusd', async (req, res) => {
   const { Upload, HTTPRequest } = req.body;
 
-  console.log({ Upload, HTTPRequest, t: 1 });
+  // console.log({ Upload, HTTPRequest, t: 1 });
 
   if (!Upload) {
     res.status(500).json({ status: false });
