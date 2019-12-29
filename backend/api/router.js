@@ -64,6 +64,12 @@ router.use(
   })
 );
 
+/**
+ * Hasura Webhook
+ *
+ * Есть идея в этом вебхуке заменить все X-Hasura-* заголовки на X-Auth-*,
+ * чтобы абстрагировать сервис авторизации от Hasura.
+ */
 router.get('/webhook/hasura', async (req, res, next) => {
   const { data } = await req.axios({
     url: SERVICE_AUTH_HASURA_WEBHOOK_ENDPOINT,
@@ -83,17 +89,19 @@ router.get('/webhook/hasura', async (req, res, next) => {
 });
 
 router.get('/callback/tusd', async (req, res) => {
-  console.log('body', req.body);
+  const { Upload, HTTPRequest } = req.body;
 
-  const data = await graphql.request(``);
+  console.log({ Upload, HTTPRequest, t: 2 });
 
-  res.json({ data });
+  // const data = await graphql.request(``);
+
+  res.json({ status: true });
 });
 
 router.post('/callback/tusd', async (req, res) => {
   const { Upload, HTTPRequest } = req.body;
 
-  console.log({ Upload, HTTPRequest });
+  console.log({ Upload, HTTPRequest, t: 1 });
 
   if (!Upload) {
     res.status(500).json({ status: false });
