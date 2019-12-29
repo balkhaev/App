@@ -47,12 +47,14 @@ module.exports = (passport, opts = {}) => {
       authorization,
       'user-agent': userAgent,
       'x-hasura-role': xHasuraRole = adminRole,
+      'x-hasura-user-id': xHasuraUserId,
+      'x-hasura-user-company-id': xHasuraUserCompanyId,
       'x-passport-secret': xPassportSecret,
     } = req.headers;
 
     // Hasura admin interface
     if (xPassportSecret === process.env.SECRET && userAgent.includes('hasura-graphql-engine/')) {
-      return res.json(createHasuraHeaders(xHasuraRole));
+      return res.json(createHasuraHeaders(xHasuraRole, xHasuraUserId, xHasuraUserCompanyId));
     }
 
     if (!authorization) {
@@ -72,14 +74,9 @@ module.exports = (passport, opts = {}) => {
 
       // Даем возможность админу посмотреть сайт за любого пользователя и компанию.
       if (role === adminRole) {
-        const {
-          'x-hasura-user-id': xHasuraUserId = id,
-          'x-hasura-user-company-id': xHasuraUserCompanyId = company_id,
-        } = req.headers;
-
-        id = xHasuraUserId;
+        id = xHasuraUserId || id;
         role = xHasuraRole;
-        company_id = xHasuraUserCompanyId;
+        company_id = xHasuraUserCompanyId || company_id;
       }
 
       res.json(createHasuraHeaders(role, id, company_id));

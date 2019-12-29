@@ -1,6 +1,3 @@
-npm i;
-echo '===== PM2 installed! =====';
-
 cd backend;
 npm i;
 [ -f .env ] || cp .env.example .env; # copy example .env file if production .env not exists
