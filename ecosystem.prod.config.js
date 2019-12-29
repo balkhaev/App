@@ -14,7 +14,8 @@ module.exports = {
         NODE_ENV: 'development',
         // Backend proxy in frontend/server.js for dev env
         BACKEND_ENDPOINT: 'http://localhost:4000/api',
-        GRAPHQL_ENDPOINT: 'http://localhost:4000/api/graphql',
+        // Why not /api/graphql? GraphQL Server need absolute URL for SSR
+        GRAPHQL_ENDPOINT: 'http://localhost:3000/api/graphql',
       },
       env_staging: {
         NODE_ENV: 'staging',

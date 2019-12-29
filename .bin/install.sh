@@ -1,25 +1,26 @@
-cd backend
-npm i
-echo '===== Backend installed! ====='
+npm i;
+echo '===== PM2 installed! =====';
 
-cd admin
-npm i
-echo '===== Backend Admin installed! ====='
-npm run build
-echo '===== Backend Admin builded! ====='
+cd backend;
+npm i;
+echo '===== Backend installed! =====';
 
-cd ../../frontend
-npm i
-echo '===== Frontend installed! ====='
-npm run build
-echo '===== Frontend builded! ====='
+cd admin;
+npm i;
+npm run build;
+echo '===== Backend Admin builded! =====';
 
-cd ../services/passport
-npm i
-[ -f .env ] || cp .env.example .env # copy example .env file if production .env not exists
-echo '===== Passport service installed! ====='
+cd ../../frontend;
+npm i;
+npm run build;
+echo '===== Frontend builded! =====';
 
-cd ../sendi
-npm i
-[ -f .env ] || cp .env.example .env
-echo '===== Sendi service installed! ====='
+cd ../services/passport;
+npm i;
+[ -f .env ] || cp .env.example .env; # copy example .env file if production .env not exists
+echo '===== Passport service installed! =====';
+
+cd ../sendi;
+npm i;
+[ -f .env ] || cp .env.example .env;
+echo '===== Sendi service installed! =====';

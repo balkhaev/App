@@ -22,10 +22,9 @@ deploy to staging:
     - eval $(ssh-agent -s)
     - echo "$STAGING_PRIVATE_KEY" | tr -d '\r' | ssh-add - > /dev/null
     - echo "$STAGING_SERVER_HOSTKEYS" > ~/.ssh/known_hosts && chmod 644 ~/.ssh/known_hosts
-    - npm i
     - npm run deploy-staging
   only:
     - master
   environment:
     name: staging
-    url: https://staging.mvs.wtf
+    url: https://staging.reallco.com

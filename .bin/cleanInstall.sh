@@ -1,3 +1,4 @@
-rm -rf services/*/.env
+rm -rf services/*/.env;
+echo '===== Old envs deleted! =====';
 
-./.bin/install.sh
+./.bin/install.sh;
