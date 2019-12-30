@@ -14,6 +14,9 @@ const Header = ({ router: { pathname } }) => (
     <Link href="/about">
       <a className={pathname === '/about' ? 'is-active' : ''}>About</a>
     </Link>
+    <Link href="/demo">
+      <a className={pathname === '/demo' ? 'is-active' : ''}>Demo</a>
+    </Link>
     <style jsx>{`
       header {
         margin-bottom: 25px;

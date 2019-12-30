@@ -109,6 +109,9 @@ router.get('/webhook/hasura', async (req, res, next) => {
   res.json(data);
 });
 
+/**
+ * Tusd Callback
+ */
 router.get('/callback/tusd', async (req, res) => {
   const { Upload, HTTPRequest } = req.body;
 

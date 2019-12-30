@@ -8,7 +8,6 @@
     "prod": "pm2 kill && pm2 start ecosystem.prod.config.js --update-env --env production && pm2 save",
     "start": "npm run dev",
     "install": "./.bin/install.sh",
-    "bumpMajor": "./.bin/bumpMajor.sh",
     "deploy-staging": "pm2 deploy ecosystem.prod.config.js staging --force --env production"
   },
   "keywords": [],

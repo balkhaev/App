@@ -5,12 +5,12 @@
 ### Install
 
 ```bash
-npm i kinovert-service-passport
+npm i bb-auth-service
 
 echo 'DATABASE_URL=postgres://<username>:<password>@<host>:<port>/<database_name>' >> .env
 
 # Apply migrations
-node ./node_modules/kinovert-serivce-passport/.bin/migrate
+node ./node_modules/bb-auth-service/.bin/migrate
 
 touch server.js
 ```
@@ -18,7 +18,7 @@ touch server.js
 `server.js`
 ```javascript
 // authService = express app
-const authService = require('kinovert-service-passport');
+const authService = require('bb-auth-service');
 
 authService.setup({
   beforeLogin(req, next) {
@@ -58,9 +58,11 @@ curl -H "Content-Type: application/json" \
 ```json
 {
   "id": 1,
-  "username": "test123",
+  "role": "user",
   "email": "test@user.ru",
-  "token": "4ffd5ee92853787836325dcea74c02e4"
+  "username": "test123",
+  "token": "4ffd5ee92853787836325dcea74c02e4",
+  "company_id": "bf4b3d61-fbc6-4e23-9089-bd825f1e2fcd"
 }
 ```
 
@@ -81,3 +83,24 @@ curl -H "Content-Type: application/json" \
 Авторизационный webhook который можно быть сконфигурирован для Hasura GraphQL Engine (`HASURA_GRAPHQL_AUTH_HOOK`) доступен на ручке `/webhook`. Он получает Authorization bearer токен для валидации юзера. Клиенту только нужно отправлять `Authorization: Bearer <token>` в запросе к GraphQL Engine.
 
 [Больше читайте здесь](https://docs.hasura.io/1.0/graphql/manual/auth/authentication/webhook.html).
+
+
+## My dream
+
+```
+Xiaomi@DESKTOP-71VBJM8 MINGW64 /c/code (master)
+$ npx bb-auth-service init auth-service --callback http://localhost:4000/api/callback/auth
+...
+$ cd auth-service
+$ npm run dev
+[auth-service] 2019/12/30 00:27:12 Using 'postgresq://user@****:host/db' from .env file as database for storage.
+[auth-service] 2019/12/30 00:27:12 Using 'http://localhost:4000/api/callback/auth' as the endpoint for hooks
+[auth-service] 2019/12/30 00:27:12 Enabled hook events: pre-login, post-login, pre-signin, post-signin
+[auth-service] 2019/12/30 00:27:12 Using 0.0.0.0:6767 as address to listen.
+[auth-service] 2019/12/30 00:27:12 Using /auth as the base path.
+[auth-service] 2019/12/30 00:27:12 Using /metrics as the metrics path.
+[auth-service] 2019/12/30 00:27:12 You can now:
+[auth-service] 2019/12/30 00:27:12 login users: http://0.0.0.0:6767/auth/login
+[auth-service] 2019/12/30 00:27:12 sign in users: http://0.0.0.0:6767/auth/signin
+[auth-service] 2019/12/30 00:27:12 And webhook for services: http://0.0.0.0:6767/auth/webhook
+```
