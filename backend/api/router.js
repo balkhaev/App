@@ -1,3 +1,4 @@
+const Boom = require('boom');
 const express = require('express');
 const proxy = require('http-proxy-middleware');
 
@@ -73,7 +74,7 @@ router.use(
         location = location.replace('/files', '/api/upload');
 
         if (process.env.NODE_ENV !== 'development') {
-          location = location.replace('http://', 'https://')
+          location = location.replace('http://', 'https://');
         }
 
         proxyRes.headers.location = location;
@@ -100,7 +101,7 @@ router.get('/webhook/hasura', async (req, res, next) => {
       const { response: { code } = {} } = e;
 
       if (code === 401) {
-        next(new Error('Unauthorized'));
+        next(Boom.unauthorized('Incorrect token'));
       }
 
       next(e);
