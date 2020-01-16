@@ -1,7 +1,11 @@
 require('elastic-apm-node').start();
 
 const express = require('express');
+const dotenv = require('dotenv');
 const axios = require('axios');
+const cors = require('cors');
+
+dotenv.config();
 
 const router = require('./api/router');
 
@@ -10,6 +14,7 @@ const PORT = process.env.PORT || 4000;
 
 app.disable('x-powered-by');
 app.use(express.json());
+app.use(cors());
 
 app.use((req, res, next) => {
   req.axios = axios.create({

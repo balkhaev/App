@@ -12,6 +12,8 @@ const {
   SERVICE_AUTH_LOGIN_ENDPOINT,
   SERVICE_GRAPHQL_ENDPOINT,
   SERVICE_UPLOAD_ENDPOINT,
+  SPORTRECS_URL,
+  MVSWTF_URL,
 } = process.env;
 
 router.use('/', express.static('./admin/build'));
@@ -135,5 +137,23 @@ router.post('/callback/tusd', async (req, res) => {
 
   res.status(200).send();
 });
+
+router.use(
+  '/sportrecs',
+  proxy({
+    target: SPORTRECS_URL,
+    pathRewrite: { '^/api/sportrecs/': '/' },
+    changeOrigin: true,
+  })
+);
+
+router.use(
+  '/mvswtf',
+  proxy({
+    target: MVSWTF_URL,
+    pathRewrite: { '^/api/mvswtf/': '/' },
+    changeOrigin: true,
+  })
+);
 
 module.exports = router;

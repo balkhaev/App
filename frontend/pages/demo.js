@@ -1,8 +1,8 @@
 import { useQuery, useMutation } from '@apollo/react-hooks';
-import { Vertee } from 'bb-vertee';
 import gql from 'graphql-tag';
 
 import Page from '../layouts/Page';
+import Player from '../components/Player';
 import { withApollo } from '../lib/apollo';
 
 export const GET_VIDEO_TOKEN = gql`
@@ -42,11 +42,9 @@ const DemoPage = props => {
     return <Page>Loading...</Page>;
   }
 
-  createPurchase();
-
   return (
     <Page>
-      <Vertee src={data.createPurchase.video.playlist} vxml="/vxml/simple.vxml" frameRate={25} debug={true} />
+      <Player src={data.createPurchase.video.playlist} vxml="/vxml/simple.vxml" frameRate={25} debug={true} />
     </Page>
   );
 };

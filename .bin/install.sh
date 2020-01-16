@@ -1,5 +1,5 @@
 cd backend;
-npm i;
+npm i --registry https://verdaccio.mvs.wtf/;
 [ -f .env ] || cp .env.example .env; # copy example .env file if production .env not exists
 echo '===== Backend installed! =====';
 
@@ -9,7 +9,7 @@ npm run build;
 echo '===== Backend Admin builded! =====';
 
 cd ../../frontend;
-npm i;
+npm i --registry https://verdaccio.mvs.wtf/;
 npm run build;
 echo '===== Frontend builded! =====';
 
