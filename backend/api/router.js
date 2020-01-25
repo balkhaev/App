@@ -145,7 +145,7 @@ router.use(
     pathRewrite: { '^/api/sportrecs/': '/' },
     changeOrigin: true,
     headers: {
-      authorization:
+      Authorization:
         'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI1ZTIxOTc4ZDNmMDkyMTQyMDFjY2U2MzciLCJpYXQiOjE1NzkyNTk4MTR9.e_7Ge2EcLo-V0kcYZK90Hl09FQkOkcqpxEvsQ7oBRTo',
     },
   })
