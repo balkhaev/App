@@ -2,8 +2,6 @@ const Boom = require('boom');
 const express = require('express');
 const proxy = require('http-proxy-middleware');
 
-const graphql = require('./graphql');
-
 const router = express.Router();
 
 const {
@@ -138,15 +136,20 @@ router.post('/callback/tusd', async (req, res) => {
   res.status(200).send();
 });
 
+const apiKey =
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI1ZTIxOTc4ZDNmMDkyMTQyMDFjY2U2MzciLCJpYXQiOjE1NzkyNTk4MTR9.e_7Ge2EcLo-V0kcYZK90Hl09FQkOkcqpxEvsQ7oBRTo';
+
 router.use(
   '/sportrecs',
   proxy({
     target: SPORTRECS_URL,
-    pathRewrite: { '^/api/sportrecs/': '/' },
+    secure: false,
     changeOrigin: true,
-    headers: {
-      Authorization:
-        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI1ZTIxOTc4ZDNmMDkyMTQyMDFjY2U2MzciLCJpYXQiOjE1NzkyNTk4MTR9.e_7Ge2EcLo-V0kcYZK90Hl09FQkOkcqpxEvsQ7oBRTo',
+    pathRewrite: (path, req) => {
+      const replacedPath = path.replace('/api/sportrecs/', '/');
+      const [newPath, queries] = replacedPath.split('?');
+
+      return `${newPath}?apiKey=${apiKey}&${queries}`;
     },
   })
 );

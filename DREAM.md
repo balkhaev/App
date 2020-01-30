@@ -4,12 +4,18 @@
 
 ```
 SERVICE_UPLOAD_ENDPOINT=/api/upload
+SERVICE_AUTH_LOGIN_ENDPOINT=/api/login
+SERVICE_AUTH_SIGNUP_ENDPOINT=/api/signup
+SERVICE_AUTH_PROFILE_ENDPOINT=/api/profile
 ```
 
 `frontend/.env.dev`
 
 ```
 SERVICE_UPLOAD_ENDPOINT=https://upload.mvs.wtf/upload
+SERVICE_AUTH_LOGIN_ENDPOINT=https://auth.mvs.wtf/login
+SERVICE_AUTH_SIGNUP_ENDPOINT=https://auth.mvs.wtf/signup
+SERVICE_AUTH_PROFILE_ENDPOINT=https://auth.mvs.wtf/profile
 ```
 
 ```js
@@ -22,7 +28,7 @@ const uploader = uplo(process.env.SERVICE_UPLOAD_ENDPOINT, {
 
 const auth = new Auth(
   {
-    login: '/api/login',
+    login: process.env.SERVICE_AUTH_LOGIN_ENDPOINT,
     signup: '/api/signup',
     profile: '/api/profile',
   },
