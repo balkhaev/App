@@ -1,3 +1,4 @@
+const url = require('url');
 const Boom = require('boom');
 const express = require('express');
 const proxy = require('http-proxy-middleware');
@@ -139,20 +140,31 @@ router.post('/callback/tusd', async (req, res) => {
 const apiKey =
   'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI1ZTIxOTc4ZDNmMDkyMTQyMDFjY2U2MzciLCJpYXQiOjE1NzkyNTk4MTR9.e_7Ge2EcLo-V0kcYZK90Hl09FQkOkcqpxEvsQ7oBRTo';
 
-router.use(
-  '/sportrecs',
-  proxy({
-    target: SPORTRECS_URL,
-    secure: false,
-    changeOrigin: true,
-    pathRewrite: (path, req) => {
-      const replacedPath = path.replace('/api/sportrecs/', '/');
-      const [newPath, queries] = replacedPath.split('?');
+router.get('/sportrecs/api/v2/contents', (req, res) => {
+  const parts = url.parse(req.url);
+  const search = parts.search.replace('?', '');
 
-      return `${newPath}?apiKey=${apiKey}&${queries}`;
-    },
-  })
-);
+  const { data } = await req.axios({
+    url: `${SPORTRECS_URL}/api/v2/contents?apiKey=${apiKey}&${search}`
+  });
+
+  res.json(data);
+});
+
+// router.use(
+//   '/sportrecs',
+//   proxy({
+//     target: SPORTRECS_URL,
+//     secure: false,
+//     changeOrigin: true,
+//     pathRewrite: (path, req) => {
+//       const replacedPath = path.replace('/api/sportrecs/', '/');
+//       const [newPath, queries] = replacedPath.split('?');
+
+//       return `${newPath}?apiKey=${apiKey}&${queries}`;
+//     },
+//   })
+// );
 
 router.use(
   '/mvswtf',
