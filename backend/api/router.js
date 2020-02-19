@@ -12,7 +12,7 @@ const {
   SERVICE_GRAPHQL_ENDPOINT,
   SERVICE_UPLOAD_ENDPOINT,
   SPORTRECS_URL,
-  MVSWTF_URL,
+  MVSWTF_URL
 } = process.env;
 
 router.use('/', express.static('./admin/build'));
@@ -22,7 +22,7 @@ router.post('/signup', async (req, res, next) => {
     .axios({
       url: SERVICE_AUTH_SIGNUP_ENDPOINT,
       data: req.body,
-      method: 'POST',
+      method: 'POST'
     })
     .catch(e => {
       next(e);
@@ -37,7 +37,7 @@ router.post('/login', async (req, res, next) => {
     .request({
       url: SERVICE_AUTH_LOGIN_ENDPOINT,
       data: req.body,
-      method: 'POST',
+      method: 'POST'
     })
     .catch(e => {
       next(e);
@@ -51,7 +51,7 @@ router.post('/graphql', async (req, res, next) => {
     .axios({
       url: SERVICE_GRAPHQL_ENDPOINT,
       method: 'POST',
-      data: req.body,
+      data: req.body
     })
     .catch(e => {
       next(e);
@@ -66,7 +66,7 @@ router.use(
     target: SERVICE_UPLOAD_ENDPOINT,
     secure: true,
     pathRewrite: {
-      '/api/upload': '/files',
+      '/api/upload': '/files'
     },
     onProxyRes: proxyRes => {
       if (proxyRes.statusCode === 201 && proxyRes.headers.location) {
@@ -80,7 +80,7 @@ router.use(
 
         proxyRes.headers.location = location;
       }
-    },
+    }
   })
 );
 
@@ -96,7 +96,7 @@ router.get('/webhook/hasura', async (req, res, next) => {
       url: SERVICE_AUTH_HASURA_WEBHOOK_ENDPOINT,
       method: 'GET',
       data: req.body,
-      headers: req.headers,
+      headers: req.headers
     })
     .catch(e => {
       const { response: { code } = {} } = e;
@@ -140,7 +140,7 @@ router.post('/callback/tusd', async (req, res) => {
 const apiKey =
   'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI1ZTIxOTc4ZDNmMDkyMTQyMDFjY2U2MzciLCJpYXQiOjE1NzkyNTk4MTR9.e_7Ge2EcLo-V0kcYZK90Hl09FQkOkcqpxEvsQ7oBRTo';
 
-router.get('/sportrecs/api/v2/contents', (req, res) => {
+router.get('/sportrecs/api/v2/contents', async (req, res) => {
   const parts = url.parse(req.url);
   const search = parts.search.replace('?', '');
 
@@ -171,7 +171,7 @@ router.use(
   proxy({
     target: MVSWTF_URL,
     pathRewrite: { '^/api/mvswtf/': '/' },
-    changeOrigin: true,
+    changeOrigin: true
   })
 );
 
