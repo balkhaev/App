@@ -4,7 +4,7 @@ npm i;
 echo '===== Backend installed! =====';
 
 cd admin;
-npm i;;
+npm i;
 npm run build;
 echo '===== Backend Admin builded! =====';
 
