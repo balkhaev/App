@@ -1,0 +1,65 @@
+version: "3"
+volumes:
+  db_data:
+services:
+  # Requirements
+  postgres:
+    image: postgres:9.6.16
+    restart: always
+    volumes:
+    - db_data:/var/lib/postgresql/data
+
+  # Services
+  pgadmin:
+    image: dpage/pgadmin4
+    restart: always
+    depends_on:
+    - postgres
+    ports:
+    - 5050:80
+    environment:
+      PGADMIN_DEFAULT_EMAIL: mb@data-screen.com
+      PGADMIN_DEFAULT_PASSWORD: testqwe123
+
+  hasura:
+    image: hasura/graphql-engine:v1.0.0
+    ports:
+    - 8080:8080
+    depends_on:
+    - postgres
+    restart: always
+    environment:
+      HASURA_GRAPHQL_DATABASE_URL: postgres://postgres:@postgres:5432/postgres
+      HASURA_GRAPHQL_ENABLE_CONSOLE: "true"
+      HASURA_GRAPHQL_ADMIN_SECRET: testqwe123
+
+  tusd:
+    image: tusproject/tusd:b4db495cc65344770bcd26536022a660c3a05084
+    ports:
+    - "1080:1080"
+    restart: always
+    command: tusd -s3-bucket=my-test-bucket.com
+    environment:
+      AWS_ACCESS_KEY_ID: xxxxx
+      AWS_SECRET_ACCESS_KEY: xxxxx
+      AWS_REGION: eu-west-1
+
+  # Apps
+  backend:
+    build: backend/
+    environment:
+      - NODE_ENV=production
+    ports:
+      - 4000:4000
+    volumes:
+      - ./backend:/home/app
+
+  frontend:
+    build: frontend/
+    environment:
+      - PORT=8080
+      - NODE_ENV=production
+    ports:
+      - 80:8080
+    volumes:
+      - ./frontend:/home/app

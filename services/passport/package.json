@@ -1,0 +1,40 @@
+{
+  "name": "bb-auth-service",
+  "version": "0.0.3",
+  "description": "Bratstvo Borsha presents - auth service on passport.js with webhook endpoint",
+  "main": "src/server.js",
+  "bin": {
+    "auth-service-run": "bin/run"
+  },
+  "scripts": {
+    "start": "node src/server.js",
+    "migrate": "knex migrate:latest",
+    "test": "jest"
+  },
+  "author": "Mikhail Balkhaev",
+  "license": "MIT",
+  "dependencies": {
+    "bcrypt": "^3.0.7",
+    "body-parser": "^1.18.3",
+    "chalk": "^2.4.1",
+    "cors": "^2.8.5",
+    "crypto": "^1.0.1",
+    "dotenv": "^6.0.0",
+    "elastic-apm-node": "^3.3.0",
+    "express": "^4.16.3",
+    "express-validator": "^5.3.0",
+    "knex": "^0.15.2",
+    "morgan": "^1.9.1",
+    "objection": "^1.2.6",
+    "objection-db-errors": "^1.0.0",
+    "passport": "^0.4.0",
+    "passport-http-bearer": "^1.0.1",
+    "passport-local": "^1.0.0",
+    "pg": "^7.4.3",
+    "util": "^0.11.0"
+  },
+  "devDependencies": {
+    "jest": "^24.9.0",
+    "supertest": "^4.0.2"
+  }
+}
